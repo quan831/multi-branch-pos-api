@@ -2,6 +2,7 @@ const app = require("./src/app");
 const sequelize = require("./src/config/database");
 
 require("./src/models/product.model");
+require("./src/models/branch.model");
 
 const PORT = 3000;
 
