@@ -6,6 +6,7 @@ const branchRoutes = require("./routes/branch.routes");
 const authRoutes = require("./routes/auth.routes");
 const customerRoutes = require("./routes/customer.routes");
 const inventoryRoutes = require("./routes/inventory.routes");
+const orderRoutes = require("./routes/order.routes");
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.use("/branches", branchRoutes);
 app.use("/auth", authRoutes);
 app.use("/customers", customerRoutes);
 app.use("/inventories", inventoryRoutes);
+app.use("/orders", orderRoutes);
 
 module.exports = app;
