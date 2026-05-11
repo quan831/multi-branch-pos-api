@@ -1,10 +1,12 @@
+require("dotenv").config();
 const app = require("./src/app");
 const sequelize = require("./src/config/database");
 
 require("./src/models/product.model");
 require("./src/models/branch.model");
+require("./src/models/user.model");
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 sequelize.sync()
     .then(() => {
