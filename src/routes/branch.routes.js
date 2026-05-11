@@ -4,14 +4,18 @@ const router = express.Router();
 
 const branchController = require("../controllers/branch.controller");
 
-router.get("/", branchController.getAllBranches);
+const {
+    verifyToken
+} = require("../middlewares/auth.middleware");
 
-router.get("/:id", branchController.getBranchById);
+router.get("/", verifyToken, branchController.getAllBranches);
 
-router.post("/", branchController.createBranch);
+router.get("/:id", verifyToken, branchController.getBranchById);
 
-router.put("/:id", branchController.updateBranch);
+router.post("/", verifyToken, branchController.createBranch);
 
-router.delete("/:id", branchController.deleteBranch);
+router.put("/:id", verifyToken, branchController.updateBranch);
+
+router.delete("/:id", verifyToken, branchController.deleteBranch);
 
 module.exports = router;
