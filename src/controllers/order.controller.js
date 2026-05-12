@@ -4,16 +4,22 @@ const createOrder = async (req, res) => {
 
     try {
 
-        const order =
-            await orderService.createOrder(
-                req.body
-            );
+        const staffId = req.user.id;
 
-        res.status(201).json(order);
+        const order =
+            await orderService.createOrder({
+                staffId,
+                ...req.body
+            });
+
+        res.status(201).json({
+            message: "Order created successfully",
+            order
+        });
 
     } catch (error) {
 
-        res.status(500).json({
+        res.status(400).json({
             message: error.message
         });
     }
