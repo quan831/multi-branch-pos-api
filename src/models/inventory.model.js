@@ -11,12 +11,14 @@ const Inventory = sequelize.define("Inventory", {
 
     productId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
 
     branchId: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        unique: true
     },
 
     quantity: {

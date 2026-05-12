@@ -8,7 +8,8 @@ const Order = require("./order.model");
 const OrderItem = require("./order-item.model");
 
 User.belongsTo(Branch, {
-    foreignKey: "branchId"
+    foreignKey: "branchId",
+    onDelete: "SET NULL"
 });
 
 Branch.hasMany(User, {
@@ -16,7 +17,8 @@ Branch.hasMany(User, {
 });
 
 Order.belongsTo(User, {
-    foreignKey: "staffId"
+    foreignKey: "staffId",
+    onDelete: "SET NULL"
 });
 
 User.hasMany(Order, {
@@ -24,7 +26,8 @@ User.hasMany(Order, {
 });
 
 Order.belongsTo(Branch, {
-    foreignKey: "branchId"
+    foreignKey: "branchId",
+    onDelete: "CASCADE"
 });
 
 Branch.hasMany(Order, {
@@ -32,7 +35,8 @@ Branch.hasMany(Order, {
 });
 
 Order.belongsTo(Customer, {
-    foreignKey: "customerId"
+    foreignKey: "customerId",
+    onDelete: "SET NULL"
 });
 
 Customer.hasMany(Order, {
@@ -40,7 +44,8 @@ Customer.hasMany(Order, {
 });
 
 Order.hasMany(OrderItem, {
-    foreignKey: "orderId"
+    foreignKey: "orderId",
+    onDelete: "CASCADE"
 });
 
 OrderItem.belongsTo(Order, {
@@ -48,7 +53,8 @@ OrderItem.belongsTo(Order, {
 });
 
 OrderItem.belongsTo(Product, {
-    foreignKey: "productId"
+    foreignKey: "productId",
+    onDelete: "CASCADE"
 });
 
 Product.hasMany(OrderItem, {
@@ -56,7 +62,8 @@ Product.hasMany(OrderItem, {
 });
 
 Inventory.belongsTo(Product, {
-    foreignKey: "productId"
+    foreignKey: "productId",
+    onDelete: "CASCADE"
 });
 
 Product.hasMany(Inventory, {
@@ -64,7 +71,8 @@ Product.hasMany(Inventory, {
 });
 
 Inventory.belongsTo(Branch, {
-    foreignKey: "branchId"
+    foreignKey: "branchId",
+    onDelete: "CASCADE"
 });
 
 Branch.hasMany(Inventory, {

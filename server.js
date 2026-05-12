@@ -7,9 +7,9 @@ require("./src/models/branch.model");
 require("./src/models/user.model");
 require("./src/models/customer.model");
 require("./src/models/inventory.model");
-require("./src/models/associations");
 require("./src/models/order.model");
 require("./src/models/order-item.model");
+require("./src/models/associations");
 
 const PORT = process.env.PORT;
 
