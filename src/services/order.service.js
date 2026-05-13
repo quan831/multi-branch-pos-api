@@ -7,9 +7,7 @@ const Branch = require("../models/branch.model");
 const User = require("../models/user.model");
 const Customer = require("../models/customer.model");
 
-const orderRepository = require(
-    "../repositories/order.repository"
-);
+const orderRepository = require("../repositories/order.repository");
 
 const createOrder = async (orderData) => {
 
@@ -63,6 +61,12 @@ const createOrder = async (orderData) => {
             await User.findByPk(
                 staffId
             );
+
+        if (staff.role === "staff" && staff.branchId !== branchId) {
+            throw new Error(
+                "Staff cannot create order for another branch"
+            );
+        }
 
         if (!staff) {
             throw new Error(
