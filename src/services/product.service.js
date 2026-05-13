@@ -1,7 +1,7 @@
 const productRepository = require("../repositories/product.repository");
 
-const getAllProducts = async () => {
-    return await productRepository.getAllProducts();
+const getAllProducts = async (page, limit) => {
+    return await productRepository.getAllProducts(page, limit);
 };
 
 const getProductById = async (id) => {

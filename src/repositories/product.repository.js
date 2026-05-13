@@ -1,7 +1,9 @@
 const Product = require("../models/product.model");
 
-const getAllProducts = async () => {
-    return await Product.findAll();
+const getAllProducts = async (page = 1, limit = 10) => {
+    const offset = (page - 1) * limit;
+
+    return await Product.findAndCountAll({limit, offset});
 };
 
 const getProductById = async (id) => {
