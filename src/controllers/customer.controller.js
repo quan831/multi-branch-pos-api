@@ -46,8 +46,8 @@ const createCustomer = async (req, res) => {
         res.status(201).json(customer);
 
     } catch (error) {
-        res.status(500).json({
-            message: "Internal server error"
+        res.status(400).json({
+            message: error.message
         });
     }
 };
@@ -69,8 +69,8 @@ const updateCustomer = async (req, res) => {
         res.status(200).json(customer);
 
     } catch (error) {
-        res.status(500).json({
-            message: "Internal server error"
+        res.status(400).json({
+            message: error.message
         });
     }
 };
