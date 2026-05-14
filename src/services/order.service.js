@@ -197,6 +197,14 @@ const getAllOrders = async () => {
     return await orderRepository.getAllOrders();
 };
 
+const getOrderHistory = async (user) => {
+    if (user.role === "admin") {
+        return await orderRepository.getAllOrders();
+    } else {
+        return await orderRepository.getOrdersByBranchId(user.branchId);
+    }
+};
+
 const getOrderById = async (id) => {
 
     const order =
@@ -274,6 +282,7 @@ const deleteOrder = async (id) => {
 module.exports = {
     createOrder,
     getAllOrders,
+    getOrderHistory,
     getOrderById,
     deleteOrder
 };

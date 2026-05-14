@@ -18,10 +18,19 @@ router.get(
     "/",
     verifyToken,
     authorizeRoles(
+        "admin"
+    ),
+    orderController.getAllOrders
+);
+
+router.get(
+    "/history",
+    verifyToken,
+    authorizeRoles(
         "admin",
         "staff"
     ),
-    orderController.getAllOrders
+    orderController.getOrderHistory
 );
 
 router.get(

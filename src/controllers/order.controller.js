@@ -17,6 +17,17 @@ const getAllOrders = async (req, res) => {
     }
 };
 
+const getOrderHistory = async (req, res) => {
+    try {
+        const orders = await orderService.getOrderHistory(req.user);
+        res.status(200).json(orders);
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 const getOrderById = async (req, res) => {
 
     try {
@@ -91,6 +102,7 @@ const createOrder = async (req, res) => {
 module.exports = {
     createOrder,
     getAllOrders,
+    getOrderHistory,
     getOrderById,
     deleteOrder
 };

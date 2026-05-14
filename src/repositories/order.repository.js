@@ -64,10 +64,25 @@ const deleteOrderItems = async (
     });
 };
 
+const getOrdersByBranchId = async (branchId) => {
+    return await Order.findAll({
+        where: { branchId },
+        include: [
+            {
+                model: OrderItem
+            }
+        ],
+        order: [
+            ["createdAt", "DESC"]
+        ]
+    });
+};
+
 module.exports = {
     createOrder,
     createOrderItem,
     getAllOrders,
     getOrderById,
+    getOrdersByBranchId,
     deleteOrderItems
 };
