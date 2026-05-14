@@ -27,7 +27,8 @@ const login = async (username, password) => {
         {
             id: user.id,
             username: user.username,
-            role: user.role
+            role: user.role,
+            branchId: user.branchId
         },
         process.env.JWT_SECRET,
         {

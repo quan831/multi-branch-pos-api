@@ -14,6 +14,25 @@ const {
     authorizeRoles
 } = require("../middlewares/role.middleware");
 
+/**
+ * @swagger
+ * tags:
+ *   name: Inventories
+ *   description: Inventory management
+ */
+
+/**
+ * @swagger
+ * /inventories:
+ *   get:
+ *     summary: Get all inventories
+ *     tags: [Inventories]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of all inventories
+ */
 router.get(
     "/",
     verifyToken,
@@ -21,6 +40,24 @@ router.get(
     inventoryController.getAllInventories
 );
 
+/**
+ * @swagger
+ * /inventories/{id}:
+ *   get:
+ *     summary: Get inventory by ID
+ *     tags: [Inventories]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Inventory details
+ */
 router.get(
     "/:id",
     verifyToken,
@@ -28,6 +65,24 @@ router.get(
     inventoryController.getInventoryById
 );
 
+/**
+ * @swagger
+ * /inventories:
+ *   post:
+ *     summary: Create a new inventory record (Admin only)
+ *     tags: [Inventories]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Inventory'
+ *     responses:
+ *       201:
+ *         description: Inventory record created
+ */
 router.post(
     "/",
     verifyToken,
@@ -35,6 +90,30 @@ router.post(
     inventoryController.createInventory
 );
 
+/**
+ * @swagger
+ * /inventories/{id}:
+ *   put:
+ *     summary: Update inventory record (Admin only)
+ *     tags: [Inventories]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Inventory'
+ *     responses:
+ *       200:
+ *         description: Inventory record updated
+ */
 router.put(
     "/:id",
     verifyToken,
@@ -42,6 +121,24 @@ router.put(
     inventoryController.updateInventory
 );
 
+/**
+ * @swagger
+ * /inventories/{id}:
+ *   delete:
+ *     summary: Delete inventory record (Admin only)
+ *     tags: [Inventories]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Inventory record deleted
+ */
 router.delete(
     "/:id",
     verifyToken,
