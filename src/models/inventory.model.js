@@ -11,14 +11,12 @@ const Inventory = sequelize.define("Inventory", {
 
     productId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
 
     branchId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
 
     quantity: {
@@ -26,6 +24,13 @@ const Inventory = sequelize.define("Inventory", {
         allowNull: false,
         defaultValue: 0
     }
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ['productId', 'branchId']
+        }
+    ]
 });
 
 module.exports = Inventory;

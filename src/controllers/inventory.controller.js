@@ -48,8 +48,8 @@ const createInventory = async (req, res) => {
         res.status(201).json(inventory);
 
     } catch (error) {
-        res.status(500).json({
-            message: "Internal server error"
+        res.status(400).json({
+            message: error.message
         });
     }
 };
@@ -71,8 +71,8 @@ const updateInventory = async (req, res) => {
         res.status(200).json(inventory);
 
     } catch (error) {
-        res.status(500).json({
-            message: "Internal server error"
+        res.status(400).json({
+            message: error.message
         });
     }
 };

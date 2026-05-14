@@ -11,12 +11,21 @@ const getInventoryById = async (id) => {
 };
 
 const createInventory = async (inventoryData) => {
+    if (!inventoryData.productId || !inventoryData.branchId) {
+        throw new Error("ProductId and branchId are required");
+    }
+    if (inventoryData.quantity !== undefined && inventoryData.quantity < 0) {
+        throw new Error("Quantity cannot be negative");
+    }
     return await inventoryRepository.createInventory(
         inventoryData
     );
 };
 
 const updateInventory = async (id, inventoryData) => {
+    if (inventoryData.quantity !== undefined && inventoryData.quantity < 0) {
+        throw new Error("Quantity cannot be negative");
+    }
     return await inventoryRepository.updateInventory(
         id,
         inventoryData
