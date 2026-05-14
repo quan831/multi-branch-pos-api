@@ -41,27 +41,24 @@ const options = {
                 Product: {
                     type: "object",
                     properties: {
-                        id: { type: "integer" },
                         name: { type: "string" },
-                        sku: { type: "string" },
-                        price: { type: "number" },
-                        category: { type: "string" },
+                        price: {
+                            type: "number",
+                            format: "double"
+                        },
                         description: { type: "string" }
                     }
                 },
                 Branch: {
                     type: "object",
                     properties: {
-                        id: { type: "integer" },
                         name: { type: "string" },
-                        address: { type: "string" },
-                        phone: { type: "string" }
+                        address: { type: "string" }
                     }
                 },
                 Customer: {
                     type: "object",
                     properties: {
-                        id: { type: "integer" },
                         name: { type: "string" },
                         phone: { type: "string" },
                         email: { type: "string" }
@@ -70,22 +67,22 @@ const options = {
                 Inventory: {
                     type: "object",
                     properties: {
-                        id: { type: "integer" },
                         productId: { type: "integer" },
                         branchId: { type: "integer" },
-                        quantity: { type: "integer" },
-                        minStockLevel: { type: "integer" }
+                        quantity: { type: "integer" }
                     }
                 },
                 Order: {
                     type: "object",
                     properties: {
-                        id: { type: "integer" },
                         branchId: { type: "integer" },
                         customerId: { type: "integer" },
-                        totalAmount: { type: "number" },
+                        totalAmount: {
+                            type: "number",
+                            format: "double"
+                        },
                         paymentMethod: { type: "string" },
-                        status: { type: "string" },
+                        syncStatus: { type: "string" },
                         items: {
                             type: "array",
                             items: { $ref: "#/components/schemas/OrderItem" }
@@ -97,7 +94,10 @@ const options = {
                     properties: {
                         productId: { type: "integer" },
                         quantity: { type: "integer" },
-                        price: { type: "number" }
+                        price: {
+                            type: "number",
+                            format: "double"
+                        }
                     }
                 },
                 LoginRequest: {
