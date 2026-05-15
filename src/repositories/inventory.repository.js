@@ -1,7 +1,14 @@
 const Inventory = require("../models/inventory.model");
+const Product = require("../models/product.model");
+const Branch = require("../models/branch.model");
 
 const getAllInventories = async () => {
-    return await Inventory.findAll();
+    return await Inventory.findAll({
+        include: [
+            { model: Product },
+            { model: Branch }
+        ]
+    });
 };
 
 const getInventoryById = async (id) => {

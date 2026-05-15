@@ -4,12 +4,14 @@ const User = require("./src/models/user.model");
 const Product = require("./src/models/product.model");
 const Inventory = require("./src/models/inventory.model");
 const bcrypt = require("bcryptjs");
+require("./src/models/associations");
 
 async function seed() {
+    console.log("Starting seed...");
     await sequelize.sync({ force: true });
     
-    const branch1 = await Branch.create({ name: "Branch 1", address: "123 Street" });
-    const branch2 = await Branch.create({ name: "Branch 2", address: "456 Avenue" });
+    const branch1 = await Branch.create({ name: "Hà Nội - Chi nhánh 1", address: "123 Cầu Giấy, Hà Nội" });
+    const branch2 = await Branch.create({ name: "TP.HCM - Chi nhánh 2", address: "456 Quận 1, TP.HCM" });
     
     const hashedPassword = await bcrypt.hash("password123", 10);
     
@@ -35,34 +37,35 @@ async function seed() {
     });
     
     const product1 = await Product.create({
-        name: "IPhone 15",
-        price: 1000,
-        description: "Latest Apple Phone"
+        name: "iPhone 15 Pro",
+        sku: "IP15P-128-BLK",
+        price: 999.99,
+        description: "Latest Apple flagship with titanium frame"
     });
 
     const product2 = await Product.create({
-        name: "Samsung S24",
-        price: 900,
-        description: "Latest Samsung Phone"
+        name: "Samsung Galaxy S24 Ultra",
+        sku: "SS-S24U-512-GRY",
+        price: 1199.99,
+        description: "Premium Android with AI features and S-Pen"
     });
 
-    await Inventory.create({
-        productId: product1.id,
-        branchId: branch1.id,
-        quantity: 10
+    const product3 = await Product.create({
+        name: "MacBook Air M3",
+        sku: "MBA-M3-8-256",
+        price: 1099.00,
+        description: "Thin and light laptop with M3 chip"
     });
 
-    await Inventory.create({
-        productId: product1.id,
-        branchId: branch2.id,
-        quantity: 5
-    });
+    // Branch 1 Inventory
+    await Inventory.create({ productId: product1.id, branchId: branch1.id, quantity: 15 });
+    await Inventory.create({ productId: product2.id, branchId: branch1.id, quantity: 10 });
+    await Inventory.create({ productId: product3.id, branchId: branch1.id, quantity: 5 });
 
-    await Inventory.create({
-        productId: product2.id,
-        branchId: branch1.id,
-        quantity: 20
-    });
+    // Branch 2 Inventory
+    await Inventory.create({ productId: product1.id, branchId: branch2.id, quantity: 8 });
+    await Inventory.create({ productId: product2.id, branchId: branch2.id, quantity: 12 });
+    await Inventory.create({ productId: product3.id, branchId: branch2.id, quantity: 0 });
 
     console.log("Database seeded successfully!");
     process.exit(0);

@@ -19,7 +19,8 @@ const getAllOrders = async (req, res) => {
 
 const getOrderHistory = async (req, res) => {
     try {
-        const orders = await orderService.getOrderHistory(req.user);
+        const { branchId } = req.query;
+        const orders = await orderService.getOrderHistory(req.user, branchId);
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({

@@ -18,7 +18,7 @@ Branch.hasMany(User, {
 
 Order.belongsTo(User, {
     foreignKey: "staffId",
-    onDelete: "SET NULL"
+    onDelete: "CASCADE"
 });
 
 User.hasMany(Order, {
@@ -78,3 +78,5 @@ Inventory.belongsTo(Branch, {
 Branch.hasMany(Inventory, {
     foreignKey: "branchId"
 });
+
+module.exports = { Product, Branch, Customer, User, Inventory, Order, OrderItem };

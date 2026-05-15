@@ -26,13 +26,19 @@ const createOrderItem = async (
     );
 };
 
-const getAllOrders = async () => {
+const Branch = require("../models/branch.model");
+const User = require("../models/user.model");
+const Product = require("../models/product.model");
 
+const getAllOrders = async () => {
     return await Order.findAll({
         include: [
             {
-                model: OrderItem
-            }
+                model: OrderItem,
+                include: [{ model: Product }]
+            },
+            { model: Branch },
+            { model: User, attributes: ['id', 'username'] }
         ],
         order: [
             ["createdAt", "DESC"]
@@ -41,12 +47,14 @@ const getAllOrders = async () => {
 };
 
 const getOrderById = async (id) => {
-
     return await Order.findByPk(id, {
         include: [
             {
-                model: OrderItem
-            }
+                model: OrderItem,
+                include: [{ model: Product }]
+            },
+            { model: Branch },
+            { model: User, attributes: ['id', 'username'] }
         ]
     });
 };
@@ -69,8 +77,11 @@ const getOrdersByBranchId = async (branchId) => {
         where: { branchId },
         include: [
             {
-                model: OrderItem
-            }
+                model: OrderItem,
+                include: [{ model: Product }]
+            },
+            { model: Branch },
+            { model: User, attributes: ['id', 'username'] }
         ],
         order: [
             ["createdAt", "DESC"]

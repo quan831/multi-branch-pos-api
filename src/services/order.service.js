@@ -197,8 +197,11 @@ const getAllOrders = async () => {
     return await orderRepository.getAllOrders();
 };
 
-const getOrderHistory = async (user) => {
+const getOrderHistory = async (user, branchId) => {
     if (user.role === "admin") {
+        if (branchId && branchId !== "all") {
+            return await orderRepository.getOrdersByBranchId(branchId);
+        }
         return await orderRepository.getAllOrders();
     } else {
         return await orderRepository.getOrdersByBranchId(user.branchId);

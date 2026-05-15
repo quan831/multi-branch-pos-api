@@ -1,9 +1,9 @@
-const Product = require("../models/product.model");
+const { Product, Inventory } = require("../models/associations");
 
-const getAllProducts = async (page = 1, limit = 10) => {
-    const offset = (page - 1) * limit;
-
-    return await Product.findAndCountAll({limit, offset});
+const getAllProducts = async () => {
+    return await Product.findAll({
+        include: [{ model: Inventory, attributes: ['quantity', 'branchId'] }]
+    });
 };
 
 const getProductById = async (id) => {

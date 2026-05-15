@@ -41,7 +41,8 @@ const login = async (username, password) => {
         user: {
             id: user.id,
             username: user.username,
-            role: user.role
+            role: user.role,
+            branchId: user.branchId
         }
     };
 };
