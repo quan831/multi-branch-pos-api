@@ -37,6 +37,7 @@ jobs:
             !.vscode
             !.env*
             !oryx-manifest.toml
+            !*.tar.gz
 
   deploy:
     runs-on: ubuntu-latest
