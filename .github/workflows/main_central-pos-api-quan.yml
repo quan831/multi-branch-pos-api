@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-22.04  
     steps:
       - uses: actions/checkout@v4
 
@@ -17,9 +17,11 @@ jobs:
         with:
           node-version: '22.x'
 
-      - name: npm install and build
+      - name: npm install and build from source
         run: |
+          rm -rf node_modules
           npm install
+          npm rebuild sqlite3 --build-from-source
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
