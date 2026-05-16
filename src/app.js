@@ -26,6 +26,14 @@ app.use("/api/inventories", inventoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/sync", syncRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.get("/", (req, res) => {
+    res.json({ message: "Multi-Branch POS API is running" });
+});
+
+app.get("/health", (req, res) => {
+    res.json({ status: "UP", timestamp: new Date() });
+});
+
 app.use("/api-docs", ...swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 module.exports = app;
