@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"No tests defined yet\"",
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node seed.js"
   },
   "keywords": [],
   "author": "",
