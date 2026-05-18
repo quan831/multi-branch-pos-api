@@ -116,6 +116,21 @@ const options = {
                             items: { $ref: "#/components/schemas/Order" }
                         }
                     }
+                },
+                SyncStatusUpdateRequest: {
+                    type: "object",
+                    required: ["orderIds", "status"],
+                    properties: {
+                        orderIds: {
+                            type: "array",
+                            items: { type: "integer" }
+                        },
+                        status: {
+                            type: "string",
+                            enum: ["synced", "pending", "failed"],
+                            description: "New synchronization status for the specified orders"
+                        }
+                    }
                 }
             }
         }

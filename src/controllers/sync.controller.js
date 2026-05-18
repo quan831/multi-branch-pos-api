@@ -29,7 +29,38 @@ const getSyncStatus = async (req, res) => {
     }
 };
 
+const getPendingOrders = async (req, res) => {
+    try {
+        const result = await syncService.getPendingOrders();
+        return res.status(200).json({
+            message: "Pending orders retrieved successfully",
+            data: result
+        });
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
+const updateSyncStatus = async (req, res) => {
+    try {
+        const { orderIds, status } = req.body;
+        const result = await syncService.updateSyncStatus(orderIds, status);
+        return res.status(200).json({
+            message: "Sync status updated successfully",
+            data: result
+        });
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message
+        });
+    }
+};
+
 module.exports = {
     syncOrders,
-    getSyncStatus
+    getSyncStatus,
+    getPendingOrders,
+    updateSyncStatus
 };
