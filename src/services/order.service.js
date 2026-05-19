@@ -62,15 +62,15 @@ const createOrder = async (orderData) => {
                 staffId
             );
 
-        if (staff.role === "staff" && staff.branchId !== branchId) {
-            throw new Error(
-                "Staff cannot create order for another branch"
-            );
-        }
-
         if (!staff) {
             throw new Error(
                 "Staff not found"
+            );
+        }
+
+        if (staff.role === "staff" && staff.branchId !== branchId) {
+            throw new Error(
+                "Staff cannot create order for another branch"
             );
         }
 

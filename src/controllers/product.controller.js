@@ -2,8 +2,8 @@ const productService = require("../services/product.service");
 
 const getAllProducts = async (req, res) => {
     try {
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 10;
+        const page = req.query.page ? parseInt(req.query.page) : undefined;
+        const limit = req.query.limit ? parseInt(req.query.limit) : undefined;
         const products = await productService.getAllProducts(page, limit);
         res.status(200).json(products);
     } catch (error) {

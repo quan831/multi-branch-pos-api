@@ -47,6 +47,20 @@ router.get("/profile", verifyToken, authController.getProfile);
 
 /**
  * @swagger
+ * /auth/me:
+ *   get:
+ *     summary: Get current user details (alias of profile)
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Current authenticated user details
+ */
+router.get("/me", verifyToken, authController.getProfile);
+
+/**
+ * @swagger
  * /auth/logout:
  *   post:
  *     summary: User logout

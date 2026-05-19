@@ -1,9 +1,16 @@
 const { Product, Inventory } = require("../models/associations");
 
-const getAllProducts = async () => {
-    return await Product.findAll({
+const getAllProducts = async (page, limit) => {
+    const queryOptions = {
         include: [{ model: Inventory, attributes: ['quantity', 'branchId'] }]
-    });
+    };
+
+    if (page !== undefined && limit !== undefined) {
+        queryOptions.limit = limit;
+        queryOptions.offset = (page - 1) * limit;
+    }
+
+    return await Product.findAll(queryOptions);
 };
 
 const getProductById = async (id) => {
