@@ -23,6 +23,7 @@ app.use("/api/branches", branchRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/customers", customerRoutes);
 app.use("/api/inventories", inventoryRoutes);
+app.use("/api/inventory", inventoryRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/sync", syncRoutes);
 app.use("/api/dashboard", dashboardRoutes);

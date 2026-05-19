@@ -38,21 +38,18 @@ async function seed() {
     
     const product1 = await Product.create({
         name: "iPhone 15 Pro",
-        sku: "IP15P-128-BLK",
         price: 999.99,
         description: "Latest Apple flagship with titanium frame"
     });
 
     const product2 = await Product.create({
         name: "Samsung Galaxy S24 Ultra",
-        sku: "SS-S24U-512-GRY",
         price: 1199.99,
         description: "Premium Android with AI features and S-Pen"
     });
 
     const product3 = await Product.create({
         name: "MacBook Air M3",
-        sku: "MBA-M3-8-256",
         price: 1099.00,
         description: "Thin and light laptop with M3 chip"
     });
