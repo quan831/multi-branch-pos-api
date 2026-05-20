@@ -68,6 +68,30 @@ router.get(
 
 /**
  * @swagger
+ * /orders/next-id:
+ *   get:
+ *     summary: Get the next globally available order ID
+ *     tags: [Orders]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Next order ID
+ *       403:
+ *         description: Forbidden
+ */
+router.get(
+    "/next-id",
+    verifyToken,
+    authorizeRoles(
+        "admin",
+        "staff"
+    ),
+    orderController.getNextOrderId
+);
+
+/**
+ * @swagger
  * /orders/{id}:
  *   get:
  *     summary: Get order by ID

@@ -282,10 +282,16 @@ const deleteOrder = async (id) => {
     }
 };
 
+const getNextOrderId = async () => {
+    const maxId = await orderRepository.getMaxOrderId();
+    return maxId ? maxId + 1 : 1;
+};
+
 module.exports = {
     createOrder,
     getAllOrders,
     getOrderHistory,
     getOrderById,
-    deleteOrder
+    deleteOrder,
+    getNextOrderId
 };

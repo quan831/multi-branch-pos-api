@@ -89,11 +89,16 @@ const getOrdersByBranchId = async (branchId) => {
     });
 };
 
+const getMaxOrderId = async () => {
+    return await Order.max('id');
+};
+
 module.exports = {
     createOrder,
     createOrderItem,
     getAllOrders,
     getOrderById,
     getOrdersByBranchId,
-    deleteOrderItems
+    deleteOrderItems,
+    getMaxOrderId
 };

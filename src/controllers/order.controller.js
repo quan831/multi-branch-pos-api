@@ -75,6 +75,17 @@ const deleteOrder = async (req, res) => {
     }
 };
 
+const getNextOrderId = async (req, res) => {
+    try {
+        const nextId = await orderService.getNextOrderId();
+        res.status(200).json({ nextId });
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
 const createOrder = async (req, res) => {
 
     try {
@@ -105,5 +116,6 @@ module.exports = {
     getAllOrders,
     getOrderHistory,
     getOrderById,
-    deleteOrder
+    deleteOrder,
+    getNextOrderId
 };
