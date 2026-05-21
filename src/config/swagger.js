@@ -38,6 +38,15 @@ const options = {
                 }
             },
             schemas: {
+                User: {
+                    type: "object",
+                    properties: {
+                        id: { type: "integer" },
+                        username: { type: "string" },
+                        role: { type: "string" },
+                        branchId: { type: "integer" }
+                    }
+                },
                 Product: {
                     type: "object",
                     properties: {
