@@ -44,41 +44,43 @@ const options = {
                         id: { type: "integer" },
                         username: { type: "string" },
                         role: { type: "string" },
-                        branchId: { type: "integer" }
+                        branchId: { type: "integer",
+                        createdAt: { type: "string", format: "date-time" },
+                        updatedAt: { type: "string", format: "date-time" } }
                     }
                 },
-                Product: {
-                    type: "object",
-                    properties: {
+                Product: { type: "object", properties: { id: { type: "integer" },
                         name: { type: "string" },
                         price: {
                             type: "number",
                             format: "double"
                         },
-                        description: { type: "string" }
+                        description: { type: "string",
+                        createdAt: { type: "string", format: "date-time" },
+                        updatedAt: { type: "string", format: "date-time" } }
                     }
                 },
-                Branch: {
-                    type: "object",
-                    properties: {
+                Branch: { type: "object", properties: { id: { type: "integer" },
                         name: { type: "string" },
-                        address: { type: "string" }
+                        address: { type: "string",
+                        createdAt: { type: "string", format: "date-time" },
+                        updatedAt: { type: "string", format: "date-time" } }
                     }
                 },
-                Customer: {
-                    type: "object",
-                    properties: {
+                Customer: { type: "object", properties: { id: { type: "integer" },
                         name: { type: "string" },
                         phone: { type: "string" },
-                        email: { type: "string" }
+                        email: { type: "string",
+                        createdAt: { type: "string", format: "date-time" },
+                        updatedAt: { type: "string", format: "date-time" } }
                     }
                 },
-                Inventory: {
-                    type: "object",
-                    properties: {
+                Inventory: { type: "object", properties: { id: { type: "integer" },
                         productId: { type: "integer" },
                         branchId: { type: "integer" },
-                        quantity: { type: "integer" }
+                        quantity: { type: "integer",
+                        createdAt: { type: "string", format: "date-time" },
+                        updatedAt: { type: "string", format: "date-time" } }
                     }
                 },
                 Order: {
@@ -96,18 +98,20 @@ const options = {
                         syncStatus: { type: "string" },
                         items: {
                             type: "array",
-                            items: { $ref: "#/components/schemas/OrderItem" }
+                            items: { $ref: "#/components/schemas/OrderItem",
+                        createdAt: { type: "string", format: "date-time" },
+                        updatedAt: { type: "string", format: "date-time" } }
                         }
                     }
                 },
-                OrderItem: {
-                    type: "object",
-                    properties: {
+                OrderItem: { type: "object", properties: { id: { type: "integer" }, orderId: { type: "integer" },
                         productId: { type: "integer" },
                         quantity: { type: "integer" },
                         price: {
                             type: "number",
-                            format: "double"
+                            format: "double",
+                        createdAt: { type: "string", format: "date-time" },
+                        updatedAt: { type: "string", format: "date-time" }
                         }
                     }
                 },
