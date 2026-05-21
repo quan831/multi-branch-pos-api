@@ -1,21 +1,11 @@
-owner: "54636021"
-team: "15758313"
-lastUpdatedBy: "54636021"
-lastRevision: 1779380192000
 name: Development (Staff)
-color: null
 values:
   - key: base_url
-    value: https://cpapi.jamesnguyen831.id.vn/api/
-    enabled: true
+    value: 'https://cpapi.jamesnguyen831.id.vn/api'
   - key: username
     value: staff1
-    enabled: true
   - key: password
     value: password123
-    enabled: true
   - key: token
-    value: ""
-    enabled: true
-createdAt: 2026-05-13T20:23:04.000Z
-updatedAt: 2026-05-21T16:16:32.000Z
+    value: ''
+color: 0

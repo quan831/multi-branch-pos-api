@@ -62,6 +62,7 @@ multi-branch-pos-api/
 │   ├── repositories/       # Tương tác trực tiếp với Database qua Sequelize Model
 │   ├── middlewares/        # Bộ lọc xử lý (Xác thực Token, kiểm tra quyền hạn...)
 │   └── app.js              # Khởi tạo Express App và cấu hình Middleware toàn cục
+├── postman/                # Các file Postman Collection & Environments để test API
 ├── .env                    # Biến môi trường cục bộ (Bảo mật)
 ├── .env.example            # Bản mẫu cấu hình biến môi trường
 ├── package.json            # Quản lý thư viện và script npm
@@ -115,8 +116,11 @@ npm run seed
 
 ## 📖 Tài Liệu Hướng Dẫn Sử Dụng API (Swagger UI)
 
-Khi server đang chạy (ví dụ tại `http://localhost:3000`), bạn có thể mở trình duyệt và truy cập:
+Khi server đang chạy local (ví dụ tại `http://localhost:3000`), bạn có thể mở trình duyệt và truy cập:
 👉 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
+
+🌍 **Môi trường Live (Azure):**
+👉 **[https://cpapi.jamesnguyen831.id.vn/api-docs](https://cpapi.jamesnguyen831.id.vn/api-docs)**
 
 Tại đây, bạn sẽ thấy toàn bộ danh sách API được phân loại trực quan:
 1.  **Auth (`/api/auth`):** `POST /login`, `POST /register`, `GET /me`...
@@ -130,6 +134,25 @@ Tại đây, bạn sẽ thấy toàn bộ danh sách API được phân loại t
     *   `GET /api/sync/pending`: Xem danh sách các đơn hàng đang chờ đồng bộ hóa trên Express Server.
     *   `PUT /api/sync/status`: Cập nhật trạng thái của các hóa đơn sau khi hoàn thành đối soát.
 8.  **Dashboard (`/api/dashboard`):** Lấy dữ liệu phân tích biểu đồ quản trị (Doanh số chi nhánh, tổng quan doanh thu).
+
+---
+
+## 📮 Kiểm Thử Bằng Postman (Postman Collection)
+
+Bên cạnh Swagger UI, dự án cũng cung cấp sẵn bộ **Postman Collection** và **Environments** để thuận tiện cho việc kiểm thử API và làm việc nhóm. Toàn bộ dữ liệu Postman đã được đồng bộ và lưu trong thư mục `postman/`.
+
+> **🔗 Live Server URL (Azure):** Hệ thống đã được deploy thực tế. Bạn có thể gọi trực tiếp đến API qua đường dẫn: `https://cpapi.jamesnguyen831.id.vn/api` (URL này đã được cấu hình sẵn làm `base_url` trong các file environment).
+
+### Cách Sử Dụng:
+1. Mở Postman (hoặc VS Code có extension Postman) và chọn **Import**.
+2. Kéo thả hoặc chọn toàn bộ các file trong thư mục `postman/`:
+   - `postman_collection.json` (Chứa danh sách đầy đủ các Endpoint, Test Scripts và các Examples response).
+   - `postman_environment_admin.json` (Môi trường đi kèm cấu hình Admin).
+   - `postman_environment_staff.json` (Môi trường đi kèm cấu hình Staff).
+3. Sau khi Import, chọn Environment tương ứng ở góc phải trên cùng của Postman (Ví dụ: `Development (Admin)` hoặc `Development (Staff)`).
+4. Chạy request **`Auth -> Login`** đầu tiên. Script tự động của collection sẽ tự động trích xuất chuỗi JWT và gán vào biến môi trường `token`. Từ đó, bạn có thể gọi tất cả các API được bảo mật tiếp theo mà không cần copy/paste token thủ công.
+
+> **💡 Lưu ý:** Toàn bộ các test case phân quyền (bao gồm các trường hợp thành công và bị từ chối `403 Forbidden` đối với từng Role) đều đã được tạo sẵn Example Responses bên trong thư mục. Để bảo mật, các token mẫu (JWT) đã được làm sạch và thay thế bằng `<REDACTED_TOKEN>`.
 
 ---
 
