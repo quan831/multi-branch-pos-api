@@ -30,6 +30,12 @@ const {verifyToken} = require("../middlewares/auth.middleware");
  *     responses:
  *       200:
  *         description: Sync successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Order'
  */
 router.post(
     "/orders",
@@ -48,6 +54,17 @@ router.post(
  *     responses:
  *       200:
  *         description: Current sync status
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 pending:
+ *                   type: integer
+ *                 synced:
+ *                   type: integer
+ *                 failed:
+ *                   type: integer
  */
 router.get(
     "/status",
