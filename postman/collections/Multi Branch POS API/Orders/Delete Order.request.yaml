@@ -1,0 +1,5 @@
+$kind: http-request
+url: "{{base_url}}/orders/1"
+method: DELETE
+examples: ./.resources/Delete Order.resources/examples
+order: 5000

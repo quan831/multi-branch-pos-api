@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{base_url}}/products"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Choco latte\",\r
+
+    \  \"price\": 30000,\r
+
+    \  \"description\": \"Hot choco latte\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Create Product.resources/examples
+order: 1000

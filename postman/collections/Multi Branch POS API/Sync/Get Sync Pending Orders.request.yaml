@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{base_url}}/sync/pending"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Get Sync Pending Orders.resources/examples
+order: 3000

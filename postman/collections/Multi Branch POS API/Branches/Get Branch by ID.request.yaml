@@ -1,0 +1,5 @@
+$kind: http-request
+url: "{{base_url}}/branches/1"
+method: GET
+examples: ./.resources/Get Branch by ID.resources/examples
+order: 5000

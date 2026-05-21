@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{base_url}}/products"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Milk Tea\",\r
+
+    \  \"price\": 45000,\r
+
+    \  \"description\": \"Bubble tea\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Create More Products.resources/examples
+order: 2000

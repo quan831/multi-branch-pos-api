@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{base_url}}/customers"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Test\",\r
+
+    \  \"phone\": \"abc\",\r
+
+    \  \"email\": \"test@gmail.com\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Invalid Phone.resources/examples
+order: 2000

@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{base_url}}/inventories"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"productId\": 2,\r
+
+    \  \"branchId\": 2,\r
+
+    \  \"quantity\": 100\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Create Inventory.resources/examples
+order: 1000

@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{base_url}}/inventories"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Get Inventories.resources/examples
+order: 2000

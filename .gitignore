@@ -2,6 +2,8 @@
 
 .vscode
 .idea
+.resources
+.postman
 
 # dependencies
 /node_modules

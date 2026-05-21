@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{base_url}}/branches/1"
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      const username = pm.environment.get("username");
+      if (username === "admin") {
+          pm.test("Status is 200", function () { pm.response.to.have.status(200); });
+          pm.test("Delete message", function () {
+              const response = pm.response.json();
+              pm.expect(response.message).to.equal("Branch deleted successfully");
+          });
+      } else if (username === "staff1") {
+          pm.test("Staff should be forbidden from deleting branch", function () {
+              pm.response.to.have.status(403);
+          });
+      }
+    language: text/javascript
+examples: ./.resources/Delete Branch.resources/examples
+order: 4000

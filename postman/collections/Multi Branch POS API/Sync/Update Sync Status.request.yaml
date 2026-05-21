@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{base_url}}/sync/status"
+method: PUT
+body:
+  type: json
+  content: |-
+    {
+      "orderIds": [
+        1
+      ],
+      "status": "synced"
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Update Sync Status.resources/examples
+order: 4000

@@ -1,0 +1,5059 @@
+{
+  "collection": {
+    "info": {
+      "_postman_id": "f23bbc63-2cf9-449e-b30a-3b3af0c751fa",
+      "name": "Multi Branch POS API",
+      "description": "# Multi Branch POS API\n\nThis collection covers the full backend API for a **multi-branch Point of Sale (POS) system**. It is organized into 8 functional modules, providing 37 endpoints to manage all core operations across branches — from authentication and product management to order processing, inventory tracking, and cross-branch data synchronization.\n\n## Modules\n\n| Module | Endpoints | Description |\n| --- | --- | --- |\n| **Auth** | 3 | User login, profile retrieval, and logout |\n| **Products** | 7 | Full CRUD for products, plus pagination support |\n| **Branches** | 5 | Create, read, update, and delete branch records |\n| **Customers** | 7 | Customer management with validation error cases (invalid email/phone) |\n| **Inventory** | 5 | Per-branch inventory tracking with full CRUD |\n| **Orders** | 5 | Order creation, retrieval, history, and deletion |\n| **Sync** | 4 | Cross-branch order synchronization and status management |\n| **Dashboard** | 1 | Aggregated stats across all branches |\n\n## Getting Started\n\nSet the `base_url` variable in your active environment to point to your target server. Use the **Auth** folder to log in and obtain a token, then proceed with any other module.",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+      "createdAt": "2026-05-13T20:19:35.000Z",
+      "updatedAt": "2026-05-21T15:27:55.000Z",
+      "lastUpdatedBy": "54636021",
+      "uid": "54636021-f23bbc63-2cf9-449e-b30a-3b3af0c751fa"
+    },
+    "item": [
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "Login",
+            "event": [
+              {
+                "script": {
+                  "id": "6ba5b57b-85b8-41c5-bee8-2a2ff8ce1488",
+                  "exec": [
+                    "const response = pm.response.json();",
+                    "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                    "pm.test(\"Login successful\", function () { pm.expect(response.message).to.equal(\"Login successful\"); });",
+                    "if (response.token) {",
+                    "    pm.environment.set(\"token\", response.token);",
+                    "}"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "requests": {}
+                },
+                "listen": "test"
+              },
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "0563c1f0-1059-4ec3-8fd2-098ad3c46882",
+                  "exec": [],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "id": "32a7693e-f27a-4636-aa74-dfb1eeebf81a",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "noauth"
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"username\": \"{{username}}\",\n  \"password\": \"{{password}}\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/auth/login",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "auth",
+                  "login"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "ee7f8439-7526-4fbe-a3a3-4756bd767a59",
+                "name": "Admin login successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/auth/login",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "auth",
+                      "login"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "304"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"130-reOylUs6l1uwS2e1IzVgNU/B3FU\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Login successful\",\n  \"token\": \"<REDACTED_TOKEN>\",\n  \"user\": {\n    \"id\": 1,\n    \"username\": \"admin\",\n    \"role\": \"admin\",\n    \"branchId\": 1\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-ee7f8439-7526-4fbe-a3a3-4756bd767a59"
+              },
+              {
+                "id": "44093ac4-91d6-41cf-b16e-77f1bc258de9",
+                "name": "Staff login successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"username\": \"staff1\",\n  \"password\": \"password123\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/auth/login",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "auth",
+                      "login"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "306"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"132-yd+CbHQEg4ptrTVK/dobCHNMPmA\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Login successful\",\n  \"token\": \"<REDACTED_TOKEN>\",\n  \"user\": {\n    \"id\": 2,\n    \"username\": \"staff1\",\n    \"role\": \"staff\",\n    \"branchId\": 1\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-44093ac4-91d6-41cf-b16e-77f1bc258de9"
+              },
+              {
+                "id": "e810bf20-0a10-433f-82e5-01cae70d1f35",
+                "name": "Admin invalid username or password",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"wrong\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/auth/login",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "auth",
+                      "login"
+                    ]
+                  }
+                },
+                "status": "Unauthorized",
+                "code": 401,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "42"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"2a-skIAxDAbP+E0wHjAEalh+HBFMwM\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Invalid username or password\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-e810bf20-0a10-433f-82e5-01cae70d1f35"
+              },
+              {
+                "id": "fab7fb91-537f-4319-b3d8-42ab420d5337",
+                "name": "Staff invalid username or password",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"username\": \"staff1\",\n  \"password\": \"wrong\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/auth/login",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "auth",
+                      "login"
+                    ]
+                  }
+                },
+                "status": "Unauthorized",
+                "code": 401,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "42"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"2a-skIAxDAbP+E0wHjAEalh+HBFMwM\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Invalid username or password\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-fab7fb91-537f-4319-b3d8-42ab420d5337"
+              }
+            ],
+            "createdAt": "2026-05-13T20:25:06.000Z",
+            "updatedAt": "2026-05-21T15:16:48.000Z",
+            "uid": "54636021-32a7693e-f27a-4636-aa74-dfb1eeebf81a"
+          },
+          {
+            "name": "Profile",
+            "id": "b6caeaf6-e5e3-469a-b019-55089264550c",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/auth/profile",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "auth",
+                  "profile"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "a71e9085-10d2-401f-84e7-10d20ab0865a",
+                "name": "Get Admin Profile",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/auth/profile",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "auth",
+                      "profile"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "98"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"62-/AzUC8Xn4/19+nhWlpsHlen7lr4\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"user\": {\n    \"id\": 1,\n    \"username\": \"admin\",\n    \"role\": \"admin\",\n    \"branchId\": 1,\n    \"iat\": 1779100373,\n    \"exp\": 1779186773\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-a71e9085-10d2-401f-84e7-10d20ab0865a"
+              },
+              {
+                "id": "06cf9715-fd8f-4d2d-9e04-04ffe84c89be",
+                "name": "Get Staff Profile",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/auth/profile",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "auth",
+                      "profile"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "99"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"63-PQeEpcu7LdCZ0eWl+lsfgaP/y2U\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"user\": {\n    \"id\": 2,\n    \"username\": \"staff1\",\n    \"role\": \"staff\",\n    \"branchId\": 1,\n    \"iat\": 1779100373,\n    \"exp\": 1779186773\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-06cf9715-fd8f-4d2d-9e04-04ffe84c89be"
+              }
+            ],
+            "createdAt": "2026-05-13T20:37:11.000Z",
+            "updatedAt": "2026-05-13T20:39:00.000Z",
+            "uid": "54636021-b6caeaf6-e5e3-469a-b019-55089264550c"
+          },
+          {
+            "name": "Logout",
+            "id": "b6e3fb8f-e840-e78a-4c7d-a835589fc48c",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/auth/logout",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "auth",
+                  "logout"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "dcad584f-a349-4cb8-b96b-4828ab0827e1",
+                "name": "Logout Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/auth/logout",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "auth",
+                      "logout"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "31"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"1f-vYmtThEV0qgPmOaoi5WLoJuDA80\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Logout successful\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-dcad584f-a349-4cb8-b96b-4828ab0827e1"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:45.000Z",
+            "updatedAt": "2026-05-14T12:39:45.000Z",
+            "uid": "54636021-b6e3fb8f-e840-e78a-4c7d-a835589fc48c"
+          }
+        ],
+        "id": "7313d7be-8404-4e49-8741-062ceebaf0fc",
+        "createdAt": "2026-05-13T20:20:19.000Z",
+        "updatedAt": "2026-05-14T12:39:45.000Z",
+        "uid": "54636021-7313d7be-8404-4e49-8741-062ceebaf0fc"
+      },
+      {
+        "name": "Products",
+        "item": [
+          {
+            "name": "Create Product",
+            "id": "42cf4f32-72ce-4d3b-83fd-25af894e3ee1",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Choco latte\",\r\n  \"price\": 30000,\r\n  \"description\": \"Hot choco latte\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/products",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "products"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "5d55eb97-d37c-485e-bc62-c1ea512bd009",
+                "name": "Create Product Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Choco latte\",\n  \"price\": 30000,\n  \"description\": \"Hot choco latte\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/products",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products"
+                    ]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "153"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"99-/82ZGpuvW5tD+pG+Re9WjOorP2M\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 4,\n  \"name\": \"Choco latte\",\n  \"price\": 30000,\n  \"description\": \"Hot choco latte\",\n  \"updatedAt\": \"2026-05-18T10:32:53.829Z\",\n  \"createdAt\": \"2026-05-18T10:32:53.829Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-5d55eb97-d37c-485e-bc62-c1ea512bd009"
+              },
+              {
+                "id": "b1b040ae-b06b-4312-82cd-5611a8eecc37",
+                "name": "Create Product Forbidden (Staff)",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Choco latte\",\n  \"price\": 30000,\n  \"description\": \"Hot choco latte\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/products",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "23"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"17-bqIm6pxC4cx+ZoszvXxsClwgWw8\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Forbidden\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-b1b040ae-b06b-4312-82cd-5611a8eecc37"
+              }
+            ],
+            "createdAt": "2026-05-13T20:44:51.000Z",
+            "updatedAt": "2026-05-13T21:12:46.000Z",
+            "uid": "54636021-42cf4f32-72ce-4d3b-83fd-25af894e3ee1"
+          },
+          {
+            "name": "Create More Products",
+            "id": "1738291f-b386-4345-b3f0-4d0f8e8b327b",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Milk Tea\",\r\n  \"price\": 45000,\r\n  \"description\": \"Bubble tea\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/products",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "products"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "8802519b-76a9-4f6b-a4b4-85af735fc454",
+                "name": "Create More Products Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Milk Tea\",\n  \"price\": 45000,\n  \"description\": \"Bubble tea\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/products",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products"
+                    ]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "145"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"91-/MPytr5GoRGPBZXyKa4qjox1X2w\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 5,\n  \"name\": \"Milk Tea\",\n  \"price\": 45000,\n  \"description\": \"Bubble tea\",\n  \"updatedAt\": \"2026-05-18T10:32:53.848Z\",\n  \"createdAt\": \"2026-05-18T10:32:53.848Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-8802519b-76a9-4f6b-a4b4-85af735fc454"
+              }
+            ],
+            "createdAt": "2026-05-13T20:46:15.000Z",
+            "updatedAt": "2026-05-13T20:47:06.000Z",
+            "uid": "54636021-1738291f-b386-4345-b3f0-4d0f8e8b327b"
+          },
+          {
+            "name": "Get Products",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\\\"Status is 200\\\", function () { pm.response.to.have.status(200); });"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "id": "4e2b9606-9712-45f3-89cd-b182223f9b3c",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/products",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "products"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "f7b585a2-4aa6-4413-afbb-c42e648cb9b8",
+                "name": "Get Products Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/products",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "774"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"306-3qV/OQ00w5fGzUju6lcLYiH1iWs\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"iPhone 15 Pro\",\n    \"price\": 999.99,\n    \"description\": \"Latest Apple flagship with titanium frame\",\n    \"createdAt\": \"2026-05-18T10:32:53.314Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.314Z\",\n    \"Inventories\": [\n      {\n        \"quantity\": 15,\n        \"branchId\": 1\n      },\n      {\n        \"quantity\": 8,\n        \"branchId\": 2\n      }\n    ]\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Samsung Galaxy S24 Ultra\",\n    \"price\": 1199.99,\n    \"description\": \"Premium Android with AI features and S-Pen\",\n    \"createdAt\": \"2026-05-18T10:32:53.317Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.317Z\",\n    \"Inventories\": [\n      {\n        \"quantity\": 10,\n        \"branchId\": 1\n      },\n      {\n        \"quantity\": 12,\n        \"branchId\": 2\n      }\n    ]\n  },\n  {\n    \"id\": 3,\n    \"name\": \"MacBook Air M3\",\n    \"price\": 1099,\n    \"description\": \"Thin and light laptop with M3 chip\",\n    \"createdAt\": \"2026-05-18T10:32:53.321Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.321Z\",\n    \"Inventories\": [\n      {\n        \"quantity\": 5,\n        \"branchId\": 1\n      },\n      {\n        \"quantity\": 0,\n        \"branchId\": 2\n      }\n    ]\n  }\n]",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-f7b585a2-4aa6-4413-afbb-c42e648cb9b8"
+              }
+            ],
+            "createdAt": "2026-05-13T20:47:19.000Z",
+            "updatedAt": "2026-05-14T12:08:40.000Z",
+            "uid": "54636021-4e2b9606-9712-45f3-89cd-b182223f9b3c"
+          },
+          {
+            "name": "Pagination Test",
+            "id": "5c7e109e-af22-4475-8d46-7d81307d50e9",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/products?page=1&limit=1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "products"
+                ],
+                "query": [
+                  {
+                    "key": "page",
+                    "value": "1"
+                  },
+                  {
+                    "key": "limit",
+                    "value": "1"
+                  }
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "428af607-b31d-4f54-880f-6acea1fef122",
+                "name": "Pagination Test Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/products?page=1&limit=1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products"
+                    ],
+                    "query": [
+                      {
+                        "key": "page",
+                        "value": "1"
+                      },
+                      {
+                        "key": "limit",
+                        "value": "1"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "774"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"306-3qV/OQ00w5fGzUju6lcLYiH1iWs\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"iPhone 15 Pro\",\n    \"price\": 999.99,\n    \"description\": \"Latest Apple flagship with titanium frame\",\n    \"createdAt\": \"2026-05-18T10:32:53.314Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.314Z\",\n    \"Inventories\": [\n      {\n        \"quantity\": 15,\n        \"branchId\": 1\n      },\n      {\n        \"quantity\": 8,\n        \"branchId\": 2\n      }\n    ]\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Samsung Galaxy S24 Ultra\",\n    \"price\": 1199.99,\n    \"description\": \"Premium Android with AI features and S-Pen\",\n    \"createdAt\": \"2026-05-18T10:32:53.317Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.317Z\",\n    \"Inventories\": [\n      {\n        \"quantity\": 10,\n        \"branchId\": 1\n      },\n      {\n        \"quantity\": 12,\n        \"branchId\": 2\n      }\n    ]\n  },\n  {\n    \"id\": 3,\n    \"name\": \"MacBook Air M3\",\n    \"price\": 1099,\n    \"description\": \"Thin and light laptop with M3 chip\",\n    \"createdAt\": \"2026-05-18T10:32:53.321Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.321Z\",\n    \"Inventories\": [\n      {\n        \"quantity\": 5,\n        \"branchId\": 1\n      },\n      {\n        \"quantity\": 0,\n        \"branchId\": 2\n      }\n    ]\n  }\n]",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-428af607-b31d-4f54-880f-6acea1fef122"
+              }
+            ],
+            "createdAt": "2026-05-13T20:48:14.000Z",
+            "updatedAt": "2026-05-13T20:48:39.000Z",
+            "uid": "54636021-5c7e109e-af22-4475-8d46-7d81307d50e9"
+          },
+          {
+            "name": "Update Product",
+            "id": "b41e8abf-e976-4b33-9129-3262090e08de",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Black Coffee\",\r\n  \"price\": 35000,\r\n  \"description\": \"Updated\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/products/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "products",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "4b0222f8-5d7b-4a37-a439-8d546aec7d18",
+                "name": "Update Product Successful",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Black Coffee\",\n  \"price\": 35000,\n  \"description\": \"Updated\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/products/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "146"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"92-DuvLoNKVXReAubZGFAiDwT88/W8\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"name\": \"Black Coffee\",\n  \"price\": 35000,\n  \"description\": \"Updated\",\n  \"createdAt\": \"2026-05-18T10:32:53.314Z\",\n  \"updatedAt\": \"2026-05-18T10:32:53.864Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-4b0222f8-5d7b-4a37-a439-8d546aec7d18"
+              },
+              {
+                "id": "9f79eefe-28f4-b03a-f02f-9032eda8dea9",
+                "name": "Update Product Forbidden (Staff)",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "PUT",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n  \"name\": \"Black Coffee\",\r\n  \"price\": 35000,\r\n  \"description\": \"Updated\"\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/products/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:12.000Z",
+                "updatedAt": "2026-05-21T15:23:12.000Z",
+                "uid": "54636021-9f79eefe-28f4-b03a-f02f-9032eda8dea9"
+              }
+            ],
+            "createdAt": "2026-05-13T20:49:18.000Z",
+            "updatedAt": "2026-05-21T15:23:12.000Z",
+            "uid": "54636021-b41e8abf-e976-4b33-9129-3262090e08de"
+          },
+          {
+            "name": "Delete Product",
+            "id": "d03c6649-9825-40b0-a475-999611774109",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/products/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "products",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "ac4fbe7f-f6ea-40cd-9ef6-4ce8a551a2cb",
+                "name": "Delete Product Successful",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/products/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "42"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"2a-a+2htZNpkCDaj0ausIFBiheaYZ4\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Product deleted successfully\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-ac4fbe7f-f6ea-40cd-9ef6-4ce8a551a2cb"
+              },
+              {
+                "id": "e0f75ccf-86e3-854e-df08-7695a48dcabf",
+                "name": "Delete Product Forbidden (Staff)",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "DELETE",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/products/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:13.000Z",
+                "updatedAt": "2026-05-21T15:23:13.000Z",
+                "uid": "54636021-e0f75ccf-86e3-854e-df08-7695a48dcabf"
+              }
+            ],
+            "createdAt": "2026-05-13T20:49:59.000Z",
+            "updatedAt": "2026-05-21T15:23:13.000Z",
+            "uid": "54636021-d03c6649-9825-40b0-a475-999611774109"
+          },
+          {
+            "name": "Get Product by ID",
+            "id": "18a2bf4a-3e6e-0b46-c941-a06d0415c002",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/products/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "products",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "4f56edb0-38a2-4ef0-a9dd-e3becb536a11",
+                "name": "Get Product by ID Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/products/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "products",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "182"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:53 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"b6-b/XRBlF4QwY/2X0Ug1SmNJ81e6w\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"name\": \"iPhone 15 Pro\",\n  \"price\": 999.99,\n  \"description\": \"Latest Apple flagship with titanium frame\",\n  \"createdAt\": \"2026-05-18T10:32:53.314Z\",\n  \"updatedAt\": \"2026-05-18T10:32:53.314Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-4f56edb0-38a2-4ef0-a9dd-e3becb536a11"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:46.000Z",
+            "updatedAt": "2026-05-14T12:39:46.000Z",
+            "uid": "54636021-18a2bf4a-3e6e-0b46-c941-a06d0415c002"
+          }
+        ],
+        "id": "aafb1df5-595d-424e-b468-5ce3bae229ba",
+        "createdAt": "2026-05-13T20:20:44.000Z",
+        "updatedAt": "2026-05-14T12:39:46.000Z",
+        "uid": "54636021-aafb1df5-595d-424e-b468-5ce3bae229ba"
+      },
+      {
+        "name": "Branches",
+        "item": [
+          {
+            "name": "Create Branch",
+            "id": "e834ec4b-1b0c-4df1-a606-07b1ca7f8b68",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Branch A\",\r\n  \"address\": \"Thai Nguyen\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/branches",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "branches"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "a04c57f6-338d-44ef-89c0-28cecf3b103e",
+                "name": "Create Branch Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Branch A\",\n  \"address\": \"Thai Nguyen\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/branches",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "branches"
+                    ]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "128"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"80-V1C7oqKNW4tDazWNXDxuNrBbwWE\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 3,\n  \"name\": \"Branch A\",\n  \"address\": \"Thai Nguyen\",\n  \"updatedAt\": \"2026-05-18T10:32:54.101Z\",\n  \"createdAt\": \"2026-05-18T10:32:54.101Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-a04c57f6-338d-44ef-89c0-28cecf3b103e"
+              }
+            ],
+            "createdAt": "2026-05-13T20:39:27.000Z",
+            "updatedAt": "2026-05-13T20:40:25.000Z",
+            "uid": "54636021-e834ec4b-1b0c-4df1-a606-07b1ca7f8b68"
+          },
+          {
+            "name": "Get All Branches",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                    "pm.test(\"Branches returned\", function () {",
+                    "    const response = pm.response.json();",
+                    "    pm.expect(response).to.be.an(\"array\");",
+                    "    pm.expect(response.length).to.be.at.least(1);",
+                    "});"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "id": "4ebda57f-4b33-4bf0-a911-5b0d959151fc",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/branches",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "branches"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "c910fa2f-a38a-4647-be1b-0cdd3d97e5a7",
+                "name": "Get All Branches Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/branches",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "branches"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "313"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"139-ZrUmIzVN1XD+VdB9E8BOOGFmemo\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Hà Nội - Chi nhánh 1\",\n    \"address\": \"123 Cầu Giấy, Hà Nội\",\n    \"createdAt\": \"2026-05-18T10:32:53.951Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.951Z\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"TP.HCM - Chi nhánh 2\",\n    \"address\": \"456 Quận 1, TP.HCM\",\n    \"createdAt\": \"2026-05-18T10:32:53.954Z\",\n    \"updatedAt\": \"2026-05-18T10:32:53.954Z\"\n  }\n]",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-c910fa2f-a38a-4647-be1b-0cdd3d97e5a7"
+              }
+            ],
+            "createdAt": "2026-05-13T20:40:53.000Z",
+            "updatedAt": "2026-05-14T12:20:26.000Z",
+            "uid": "54636021-4ebda57f-4b33-4bf0-a911-5b0d959151fc"
+          },
+          {
+            "name": "Update Branch",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "const username = pm.environment.get(\"username\");",
+                    "if (username === \"admin\") {",
+                    "    pm.test(\"Status is 200 or 201\", function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });",
+                    "    pm.test(\"Branch updated\", function () {",
+                    "        const response = pm.response.json();",
+                    "        pm.expect(response.name).to.equal(\"Branch Updated\");",
+                    "    });",
+                    "} else if (username === \"staff1\") {",
+                    "    pm.test(\"Staff should be forbidden from updating branch\", function () {",
+                    "        pm.response.to.have.status(403);",
+                    "    });",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "id": "4753a90b-3ecf-4056-9309-21956337e682",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Branch Updated\",\r\n  \"address\": \"Ha Noi\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/branches/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "branches",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "8470a75e-458a-4b45-a80d-9a0e6e60bbe7",
+                "name": "Update Branch Successful",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Branch Updated\",\n  \"address\": \"Ha Noi\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/branches/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "branches",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "129"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"81-I1TnVKm0cvb2wx7IkU/YS+chrb4\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"name\": \"Branch Updated\",\n  \"address\": \"Ha Noi\",\n  \"createdAt\": \"2026-05-18T10:32:53.951Z\",\n  \"updatedAt\": \"2026-05-18T10:32:54.110Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-8470a75e-458a-4b45-a80d-9a0e6e60bbe7"
+              },
+              {
+                "id": "5fe2a55f-7873-4152-9681-86e4f20dfd9c",
+                "name": "Update Branch Forbidden (Staff)",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Branch Updated\",\n  \"address\": \"Ha Noi\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/branches/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "branches",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "23"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"17-bqIm6pxC4cx+ZoszvXxsClwgWw8\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Forbidden\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-5fe2a55f-7873-4152-9681-86e4f20dfd9c"
+              }
+            ],
+            "createdAt": "2026-05-13T20:41:29.000Z",
+            "updatedAt": "2026-05-14T12:22:57.000Z",
+            "uid": "54636021-4753a90b-3ecf-4056-9309-21956337e682"
+          },
+          {
+            "name": "Delete Branch",
+            "event": [
+              {
+                "script": {
+                  "exec": [
+                    "const username = pm.environment.get(\"username\");",
+                    "if (username === \"admin\") {",
+                    "    pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                    "    pm.test(\"Delete message\", function () {",
+                    "        const response = pm.response.json();",
+                    "        pm.expect(response.message).to.equal(\"Branch deleted successfully\");",
+                    "    });",
+                    "} else if (username === \"staff1\") {",
+                    "    pm.test(\"Staff should be forbidden from deleting branch\", function () {",
+                    "        pm.response.to.have.status(403);",
+                    "    });",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                },
+                "listen": "test"
+              }
+            ],
+            "id": "5c262953-3fec-4d77-ad1e-5ac7d7a60dc2",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/branches/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "branches",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "41430881-314b-43c7-874a-00702ed7a825",
+                "name": "Delete Branch Successful",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/branches/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "branches",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "41"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"29-CzQ1+g9Z5lo9wew6G4A+74Hx2Lk\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Branch deleted successfully\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-41430881-314b-43c7-874a-00702ed7a825"
+              },
+              {
+                "id": "50af0fcc-5741-48a0-a514-7839eabadd42",
+                "name": "Delete Branch Forbidden (Staff)",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/branches/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "branches",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "23"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"17-bqIm6pxC4cx+ZoszvXxsClwgWw8\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Forbidden\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-50af0fcc-5741-48a0-a514-7839eabadd42"
+              }
+            ],
+            "createdAt": "2026-05-13T20:42:19.000Z",
+            "updatedAt": "2026-05-14T12:31:31.000Z",
+            "uid": "54636021-5c262953-3fec-4d77-ad1e-5ac7d7a60dc2"
+          },
+          {
+            "name": "Get Branch by ID",
+            "id": "137f7582-fafb-0ace-0b29-39aa6b71ca81",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/branches/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "branches",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "3c3834b4-3657-4646-88d8-1f9809063920",
+                "name": "Get Branch by ID Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/branches/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "branches",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "160"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"a0-B0o66DB0DgUGcZGXZy8zYAQ5yXs\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"name\": \"Hà Nội - Chi nhánh 1\",\n  \"address\": \"123 Cầu Giấy, Hà Nội\",\n  \"createdAt\": \"2026-05-18T10:32:53.951Z\",\n  \"updatedAt\": \"2026-05-18T10:32:53.951Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-3c3834b4-3657-4646-88d8-1f9809063920"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:46.000Z",
+            "updatedAt": "2026-05-14T12:39:46.000Z",
+            "uid": "54636021-137f7582-fafb-0ace-0b29-39aa6b71ca81"
+          }
+        ],
+        "id": "3140b28b-e62f-4922-be6d-a210a5529e8e",
+        "createdAt": "2026-05-13T20:21:04.000Z",
+        "updatedAt": "2026-05-14T12:39:46.000Z",
+        "uid": "54636021-3140b28b-e62f-4922-be6d-a210a5529e8e"
+      },
+      {
+        "name": "Customers",
+        "item": [
+          {
+            "name": "Create Customer",
+            "id": "48e5b34b-2076-4c9b-862b-a28329595be2",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Nguyen Van A\",\r\n  \"phone\": \"0987654321\",\r\n  \"email\": \"a@gmail.com\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/customers",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "customers"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "244d5dd5-3342-4ff1-9a89-76713f899ad1",
+                "name": "Create Customer Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Nguyen Van A\",\n  \"phone\": \"0987654321\",\n  \"email\": \"a@gmail.com\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/customers",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers"
+                    ]
+                  }
+                },
+                "status": "Bad Request",
+                "code": 400,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "30"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"1e-GyAymHTqP2OB3HJLNqkaaAvxtnQ\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Validation error\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-244d5dd5-3342-4ff1-9a89-76713f899ad1"
+              },
+              {
+                "id": "8a1fe942-6221-1811-b859-728941cf4e22",
+                "name": "Create Customer Successful",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n  \"name\": \"Nguyen Van A\",\r\n  \"phone\": \"0987654321\",\r\n  \"email\": \"a@gmail.com\"\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/customers",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers"
+                    ]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"name\": \"John Doe\",\n  \"phone\": \"0123456789\",\n  \"email\": \"johndoe@example.com\",\n  \"points\": 0,\n  \"updatedAt\": \"2026-05-21T10:00:00.000Z\",\n  \"createdAt\": \"2026-05-21T10:00:00.000Z\"\n}",
+                "createdAt": "2026-05-21T15:05:47.000Z",
+                "updatedAt": "2026-05-21T15:05:47.000Z",
+                "uid": "54636021-8a1fe942-6221-1811-b859-728941cf4e22"
+              }
+            ],
+            "createdAt": "2026-05-13T20:51:26.000Z",
+            "updatedAt": "2026-05-21T15:05:47.000Z",
+            "uid": "54636021-48e5b34b-2076-4c9b-862b-a28329595be2"
+          },
+          {
+            "name": "Invalid Phone",
+            "id": "735709e3-e4a8-4464-be35-fd56fdf45448",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Test\",\r\n  \"phone\": \"abc\",\r\n  \"email\": \"test@gmail.com\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/customers",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "customers"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "2fbeae48-7c86-47da-9d03-52b819436053",
+                "name": "Invalid Phone Number",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Test\",\n  \"phone\": \"abc\",\n  \"email\": \"test@gmail.com\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/customers",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers"
+                    ]
+                  }
+                },
+                "status": "Bad Request",
+                "code": 400,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "34"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"22-EHgvj2yiwjkUZZxqaH+u8tLsgTY\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Invalid phone number\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-2fbeae48-7c86-47da-9d03-52b819436053"
+              }
+            ],
+            "createdAt": "2026-05-13T20:52:47.000Z",
+            "updatedAt": "2026-05-13T20:53:45.000Z",
+            "uid": "54636021-735709e3-e4a8-4464-be35-fd56fdf45448"
+          },
+          {
+            "name": "Invalid Email",
+            "id": "e36f55f6-5d89-4d11-b029-2ec3fa6550e7",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"name\": \"Test\",\r\n  \"phone\": \"0988888888\",\r\n  \"email\": \"abc\"\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/customers",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "customers"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "471f2b87-8d0e-425a-9085-26a33c65464a",
+                "name": "Invalid Email Address",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Test\",\n  \"phone\": \"0988888888\",\n  \"email\": \"abc\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/customers",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers"
+                    ]
+                  }
+                },
+                "status": "Bad Request",
+                "code": 400,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "27"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"1b-evcYq0xWsuHqdKUOxQRsPiOIt60\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Invalid email\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-471f2b87-8d0e-425a-9085-26a33c65464a"
+              }
+            ],
+            "createdAt": "2026-05-13T21:05:46.000Z",
+            "updatedAt": "2026-05-13T21:06:36.000Z",
+            "uid": "54636021-e36f55f6-5d89-4d11-b029-2ec3fa6550e7"
+          },
+          {
+            "name": "Get All Customers",
+            "id": "5ac128a9-3aa6-b7cf-7939-c4b779f0d477",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/customers",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "customers"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "f6933b2e-3778-4245-9fd5-a41b9409ff0f",
+                "name": "Get All Customers Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/customers",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "460"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"1cc-PPLWWTOlOOSXG6GsoxDOXUQl22s\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "[\n  {\n    \"id\": 1,\n    \"name\": \"Nguyễn Văn A\",\n    \"phone\": \"0912345678\",\n    \"email\": \"a@gmail.com\",\n    \"createdAt\": \"2026-05-18T10:32:54.318Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.318Z\"\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Trần Thị B\",\n    \"phone\": \"0987654321\",\n    \"email\": \"b@gmail.com\",\n    \"createdAt\": \"2026-05-18T10:32:54.321Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.321Z\"\n  },\n  {\n    \"id\": 3,\n    \"name\": \"Lê Văn C\",\n    \"phone\": \"0905556667\",\n    \"email\": \"c@gmail.com\",\n    \"createdAt\": \"2026-05-18T10:32:54.324Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.324Z\"\n  }\n]",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-f6933b2e-3778-4245-9fd5-a41b9409ff0f"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:47.000Z",
+            "updatedAt": "2026-05-14T12:39:47.000Z",
+            "uid": "54636021-5ac128a9-3aa6-b7cf-7939-c4b779f0d477"
+          },
+          {
+            "name": "Get Customer by ID",
+            "id": "27ec03ac-718c-4ee4-279c-bb2f276333e0",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/customers/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "customers",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "b42f1988-be87-400b-907e-2a61c57478a6",
+                "name": "Get Customer by ID Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/customers/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "154"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"9a-5arZBC2tMDHWdO6FjhiWH/N+58Q\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"name\": \"Nguyễn Văn A\",\n  \"phone\": \"0912345678\",\n  \"email\": \"a@gmail.com\",\n  \"createdAt\": \"2026-05-18T10:32:54.318Z\",\n  \"updatedAt\": \"2026-05-18T10:32:54.318Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-b42f1988-be87-400b-907e-2a61c57478a6"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:48.000Z",
+            "updatedAt": "2026-05-14T12:39:48.000Z",
+            "uid": "54636021-27ec03ac-718c-4ee4-279c-bb2f276333e0"
+          },
+          {
+            "name": "Update Customer",
+            "id": "f7812db4-0fc3-8c64-5ab8-9b65b3253675",
+            "request": {
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\"name\": \"Updated Name\", \"phone\": \"0988888888\", \"email\": \"updated@gmail.com\"}"
+              },
+              "url": {
+                "raw": "{{base_url}}/customers/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "customers",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "22bb500b-edb4-4c4f-97de-a5bfc3f97621",
+                "name": "Update Customer Successful",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"name\": \"Updated Name\",\n  \"phone\": \"0988888888\",\n  \"email\": \"updated@gmail.com\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/customers/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "157"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"9d-bx933bFaWSBrIRxQ8sN/jw8l9Vs\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"name\": \"Updated Name\",\n  \"phone\": \"0988888888\",\n  \"email\": \"updated@gmail.com\",\n  \"createdAt\": \"2026-05-18T10:32:54.318Z\",\n  \"updatedAt\": \"2026-05-18T10:32:54.353Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-22bb500b-edb4-4c4f-97de-a5bfc3f97621"
+              },
+              {
+                "id": "c8cce23f-32be-76ae-874b-50231e1ccd88",
+                "name": "Update Customer Forbidden (Staff)",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\"name\": \"Updated Name\", \"phone\": \"0988888888\", \"email\": \"updated@gmail.com\"}"
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/customers/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:13.000Z",
+                "updatedAt": "2026-05-21T15:23:13.000Z",
+                "uid": "54636021-c8cce23f-32be-76ae-874b-50231e1ccd88"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:48.000Z",
+            "updatedAt": "2026-05-21T15:23:13.000Z",
+            "uid": "54636021-f7812db4-0fc3-8c64-5ab8-9b65b3253675"
+          },
+          {
+            "name": "Delete Customer",
+            "id": "41f3effd-e854-59c3-1c66-00258eea0676",
+            "request": {
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/customers/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "customers",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "8d1223f9-b3c7-4245-bcab-04730411e4d8",
+                "name": "Delete Customer Successful",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/customers/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "43"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"2b-I1hiO/USZhyUKqOhODBip+hHZQk\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Customer deleted successfully\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-8d1223f9-b3c7-4245-bcab-04730411e4d8"
+              },
+              {
+                "id": "67155be2-1261-aaf0-0766-e3b6a070b1ea",
+                "name": "Delete Customer Forbidden (Staff)",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/customers/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "customers",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:14.000Z",
+                "updatedAt": "2026-05-21T15:23:14.000Z",
+                "uid": "54636021-67155be2-1261-aaf0-0766-e3b6a070b1ea"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:49.000Z",
+            "updatedAt": "2026-05-21T15:23:14.000Z",
+            "uid": "54636021-41f3effd-e854-59c3-1c66-00258eea0676"
+          }
+        ],
+        "id": "1cda425f-7b3f-4779-af0f-4cdc5b35fd85",
+        "createdAt": "2026-05-13T20:22:01.000Z",
+        "updatedAt": "2026-05-14T12:39:49.000Z",
+        "uid": "54636021-1cda425f-7b3f-4779-af0f-4cdc5b35fd85"
+      },
+      {
+        "name": "Inventory",
+        "item": [
+          {
+            "name": "Create Inventory",
+            "id": "5ff7d21e-0c18-45c3-a20c-5cd281cd6fdd",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"productId\": 2,\r\n  \"branchId\": 2,\r\n  \"quantity\": 100\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/inventories",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "inventories"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "e831bab8-be97-4cfd-a696-e65c59ebb08c",
+                "name": "Create Inventory Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"productId\": 2,\n  \"branchId\": 2,\n  \"quantity\": 100\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/inventories",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories"
+                    ]
+                  }
+                },
+                "status": "Bad Request",
+                "code": 400,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "30"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"1e-GyAymHTqP2OB3HJLNqkaaAvxtnQ\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Validation error\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-e831bab8-be97-4cfd-a696-e65c59ebb08c"
+              },
+              {
+                "id": "aab0d4ac-5638-3bac-2d0e-f79e06d4a10e",
+                "name": "Create Inventory Successful",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n  \"productId\": 2,\r\n  \"branchId\": 2,\r\n  \"quantity\": 100\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/inventories",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories"
+                    ]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"productId\": 1,\n  \"branchId\": 1,\n  \"quantity\": 100,\n  \"updatedAt\": \"2026-05-21T10:00:00.000Z\",\n  \"createdAt\": \"2026-05-21T10:00:00.000Z\"\n}",
+                "createdAt": "2026-05-21T15:05:47.000Z",
+                "updatedAt": "2026-05-21T15:05:47.000Z",
+                "uid": "54636021-aab0d4ac-5638-3bac-2d0e-f79e06d4a10e"
+              },
+              {
+                "id": "c0e8941f-8e19-ff2f-14bc-e0eb49ee78e0",
+                "name": "Create Inventory Forbidden (Staff)",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n  \"productId\": 2,\r\n  \"branchId\": 2,\r\n  \"quantity\": 100\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/inventories",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:26.000Z",
+                "updatedAt": "2026-05-21T15:23:26.000Z",
+                "uid": "54636021-c0e8941f-8e19-ff2f-14bc-e0eb49ee78e0"
+              }
+            ],
+            "createdAt": "2026-05-13T21:07:03.000Z",
+            "updatedAt": "2026-05-21T15:23:26.000Z",
+            "uid": "54636021-5ff7d21e-0c18-45c3-a20c-5cd281cd6fdd"
+          },
+          {
+            "name": "Get Inventories",
+            "id": "14378b4d-2e1e-4d9c-9458-0475721b6290",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/inventories",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "inventories"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "ee22b02a-cd24-4b09-8924-b4be7b659750",
+                "name": "Get Inventories Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/inventories",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "2924"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"b6c-uFzCAk2ws5cv+Ojodi7w65DnlvM\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "[\n  {\n    \"id\": 1,\n    \"productId\": 1,\n    \"branchId\": 1,\n    \"quantity\": 15,\n    \"createdAt\": \"2026-05-18T10:32:54.532Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.532Z\",\n    \"Product\": {\n      \"id\": 1,\n      \"name\": \"iPhone 15 Pro\",\n      \"price\": 999.99,\n      \"description\": \"Latest Apple flagship with titanium frame\",\n      \"createdAt\": \"2026-05-18T10:32:54.518Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.518Z\"\n    },\n    \"Branch\": {\n      \"id\": 1,\n      \"name\": \"Hà Nội - Chi nhánh 1\",\n      \"address\": \"123 Cầu Giấy, Hà Nội\",\n      \"createdAt\": \"2026-05-18T10:32:54.433Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.433Z\"\n    }\n  },\n  {\n    \"id\": 2,\n    \"productId\": 2,\n    \"branchId\": 1,\n    \"quantity\": 10,\n    \"createdAt\": \"2026-05-18T10:32:54.536Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.536Z\",\n    \"Product\": {\n      \"id\": 2,\n      \"name\": \"Samsung Galaxy S24 Ultra\",\n      \"price\": 1199.99,\n      \"description\": \"Premium Android with AI features and S-Pen\",\n      \"createdAt\": \"2026-05-18T10:32:54.523Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.523Z\"\n    },\n    \"Branch\": {\n      \"id\": 1,\n      \"name\": \"Hà Nội - Chi nhánh 1\",\n      \"address\": \"123 Cầu Giấy, Hà Nội\",\n      \"createdAt\": \"2026-05-18T10:32:54.433Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.433Z\"\n    }\n  },\n  {\n    \"id\": 3,\n    \"productId\": 3,\n    \"branchId\": 1,\n    \"quantity\": 5,\n    \"createdAt\": \"2026-05-18T10:32:54.541Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.541Z\",\n    \"Product\": {\n      \"id\": 3,\n      \"name\": \"MacBook Air M3\",\n      \"price\": 1099,\n      \"description\": \"Thin and light laptop with M3 chip\",\n      \"createdAt\": \"2026-05-18T10:32:54.527Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.527Z\"\n    },\n    \"Branch\": {\n      \"id\": 1,\n      \"name\": \"Hà Nội - Chi nhánh 1\",\n      \"address\": \"123 Cầu Giấy, Hà Nội\",\n      \"createdAt\": \"2026-05-18T10:32:54.433Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.433Z\"\n    }\n  },\n  {\n    \"id\": 4,\n    \"productId\": 1,\n    \"branchId\": 2,\n    \"quantity\": 8,\n    \"createdAt\": \"2026-05-18T10:32:54.545Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.545Z\",\n    \"Product\": {\n      \"id\": 1,\n      \"name\": \"iPhone 15 Pro\",\n      \"price\": 999.99,\n      \"description\": \"Latest Apple flagship with titanium frame\",\n      \"createdAt\": \"2026-05-18T10:32:54.518Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.518Z\"\n    },\n    \"Branch\": {\n      \"id\": 2,\n      \"name\": \"TP.HCM - Chi nhánh 2\",\n      \"address\": \"456 Quận 1, TP.HCM\",\n      \"createdAt\": \"2026-05-18T10:32:54.436Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.436Z\"\n    }\n  },\n  {\n    \"id\": 5,\n    \"productId\": 2,\n    \"branchId\": 2,\n    \"quantity\": 12,\n    \"createdAt\": \"2026-05-18T10:32:54.550Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.550Z\",\n    \"Product\": {\n      \"id\": 2,\n      \"name\": \"Samsung Galaxy S24 Ultra\",\n      \"price\": 1199.99,\n      \"description\": \"Premium Android with AI features and S-Pen\",\n      \"createdAt\": \"2026-05-18T10:32:54.523Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.523Z\"\n    },\n    \"Branch\": {\n      \"id\": 2,\n      \"name\": \"TP.HCM - Chi nhánh 2\",\n      \"address\": \"456 Quận 1, TP.HCM\",\n      \"createdAt\": \"2026-05-18T10:32:54.436Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.436Z\"\n    }\n  },\n  {\n    \"id\": 6,\n    \"productId\": 3,\n    \"branchId\": 2,\n    \"quantity\": 0,\n    \"createdAt\": \"2026-05-18T10:32:54.554Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.554Z\",\n    \"Product\": {\n      \"id\": 3,\n      \"name\": \"MacBook Air M3\",\n      \"price\": 1099,\n      \"description\": \"Thin and light laptop with M3 chip\",\n      \"createdAt\": \"2026-05-18T10:32:54.527Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.527Z\"\n    },\n    \"Branch\": {\n      \"id\": 2,\n      \"name\": \"TP.HCM - Chi nhánh 2\",\n      \"address\": \"456 Quận 1, TP.HCM\",\n      \"createdAt\": \"2026-05-18T10:32:54.436Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.436Z\"\n    }\n  }\n]",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-ee22b02a-cd24-4b09-8924-b4be7b659750"
+              }
+            ],
+            "createdAt": "2026-05-13T21:09:03.000Z",
+            "updatedAt": "2026-05-13T21:09:21.000Z",
+            "uid": "54636021-14378b4d-2e1e-4d9c-9458-0475721b6290"
+          },
+          {
+            "name": "Update Inventory",
+            "id": "c7a47d20-5563-43e5-8371-2eb3a95194e1",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"quantity\": 150\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/inventories/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "inventories",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "4be73404-924f-4582-bf7b-2f313f292cf3",
+                "name": "Update Inventory Successful",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"quantity\": 150\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/inventories/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "128"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"80-HtdwTkDALG1Be8ZvI3d0fWCsj0Y\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"productId\": 1,\n  \"branchId\": 1,\n  \"quantity\": 150,\n  \"createdAt\": \"2026-05-18T10:32:54.532Z\",\n  \"updatedAt\": \"2026-05-18T10:32:54.594Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-4be73404-924f-4582-bf7b-2f313f292cf3"
+              },
+              {
+                "id": "f9bf20a3-2000-3508-5614-bfb66b0b765f",
+                "name": "Update Inventory Forbidden (Staff)",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "PUT",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n  \"quantity\": 150\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/inventories/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:27.000Z",
+                "updatedAt": "2026-05-21T15:23:27.000Z",
+                "uid": "54636021-f9bf20a3-2000-3508-5614-bfb66b0b765f"
+              }
+            ],
+            "createdAt": "2026-05-13T21:09:45.000Z",
+            "updatedAt": "2026-05-21T15:23:27.000Z",
+            "uid": "54636021-c7a47d20-5563-43e5-8371-2eb3a95194e1"
+          },
+          {
+            "name": "Get Inventory by ID",
+            "id": "7b19ce08-8007-175f-e5b1-0f569a785f05",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/inventories/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "inventories",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "01709fc0-28a7-4b5c-8053-65e7c260059f",
+                "name": "Get Inventory by ID Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/inventories/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "127"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"7f-Xif4e4Sy0xFBM5V5ZDYniC1Yr9o\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"productId\": 1,\n  \"branchId\": 1,\n  \"quantity\": 15,\n  \"createdAt\": \"2026-05-18T10:32:54.532Z\",\n  \"updatedAt\": \"2026-05-18T10:32:54.532Z\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-01709fc0-28a7-4b5c-8053-65e7c260059f"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:49.000Z",
+            "updatedAt": "2026-05-14T12:39:49.000Z",
+            "uid": "54636021-7b19ce08-8007-175f-e5b1-0f569a785f05"
+          },
+          {
+            "name": "Delete Inventory",
+            "id": "100d42ea-2f94-1dcd-5fa3-f51c7ece8e4f",
+            "request": {
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/inventories/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "inventories",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "f67002eb-d7aa-4aa1-92db-27af9120f94e",
+                "name": "Delete Inventory Successful",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/inventories/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "44"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"2c-CpT6UJpbP/caVs+IQx/VGN27ZOA\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Inventory deleted successfully\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-f67002eb-d7aa-4aa1-92db-27af9120f94e"
+              },
+              {
+                "id": "6a9e14d7-6d06-f62e-73a4-375f1564a476",
+                "name": "Delete Inventory Forbidden (Staff)",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/inventories/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "inventories",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:28.000Z",
+                "updatedAt": "2026-05-21T15:23:28.000Z",
+                "uid": "54636021-6a9e14d7-6d06-f62e-73a4-375f1564a476"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:50.000Z",
+            "updatedAt": "2026-05-21T15:23:28.000Z",
+            "uid": "54636021-100d42ea-2f94-1dcd-5fa3-f51c7ece8e4f"
+          }
+        ],
+        "id": "855f62ae-2cf4-4929-aef0-a64cc2401979",
+        "createdAt": "2026-05-13T20:22:18.000Z",
+        "updatedAt": "2026-05-14T12:39:50.000Z",
+        "uid": "54636021-855f62ae-2cf4-4929-aef0-a64cc2401979"
+      },
+      {
+        "name": "Orders",
+        "item": [
+          {
+            "name": "Create Order",
+            "id": "59df72f5-3b2b-412e-98b3-05d51f95896a",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\r\n  \"branchId\": 2,\r\n  \"customerId\": 1,\r\n  \"paymentMethod\": \"cash\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": 1,\r\n      \"quantity\": 2\r\n    },\r\n    {\r\n      \"productId\": 2,\r\n      \"quantity\": 1\r\n    }\r\n  ]\r\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/orders",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "orders"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "04e5a834-e549-4d22-9441-1a7c294ce13a",
+                "name": "Create Order Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"branchId\": 2,\n  \"customerId\": 1,\n  \"paymentMethod\": \"cash\",\n  \"items\": [\n    {\n      \"productId\": 1,\n      \"quantity\": 2\n    },\n    {\n      \"productId\": 2,\n      \"quantity\": 1\n    }\n  ]\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/orders",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "orders"
+                    ]
+                  }
+                },
+                "status": "Created",
+                "code": 201,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "1146"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"47a-8B7ovMz+QWZtqH+8bKcEmcRITOY\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Order created successfully\",\n  \"order\": {\n    \"id\": 1,\n    \"staffId\": 1,\n    \"branchId\": 2,\n    \"customerId\": 1,\n    \"totalAmount\": 3199.9700000000003,\n    \"paymentMethod\": \"cash\",\n    \"syncStatus\": \"pending\",\n    \"createdAt\": \"2026-05-18T10:32:54.811Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.824Z\",\n    \"OrderItems\": [\n      {\n        \"id\": 1,\n        \"orderId\": 1,\n        \"productId\": 1,\n        \"quantity\": 2,\n        \"price\": 999.99,\n        \"createdAt\": \"2026-05-18T10:32:54.817Z\",\n        \"updatedAt\": \"2026-05-18T10:32:54.817Z\",\n        \"Product\": {\n          \"id\": 1,\n          \"name\": \"iPhone 15 Pro\",\n          \"price\": 999.99,\n          \"description\": \"Latest Apple flagship with titanium frame\",\n          \"createdAt\": \"2026-05-18T10:32:54.758Z\",\n          \"updatedAt\": \"2026-05-18T10:32:54.758Z\"\n        }\n      },\n      {\n        \"id\": 2,\n        \"orderId\": 1,\n        \"productId\": 2,\n        \"quantity\": 1,\n        \"price\": 1199.99,\n        \"createdAt\": \"2026-05-18T10:32:54.823Z\",\n        \"updatedAt\": \"2026-05-18T10:32:54.823Z\",\n        \"Product\": {\n          \"id\": 2,\n          \"name\": \"Samsung Galaxy S24 Ultra\",\n          \"price\": 1199.99,\n          \"description\": \"Premium Android with AI features and S-Pen\",\n          \"createdAt\": \"2026-05-18T10:32:54.762Z\",\n          \"updatedAt\": \"2026-05-18T10:32:54.762Z\"\n        }\n      }\n    ],\n    \"Branch\": {\n      \"id\": 2,\n      \"name\": \"TP.HCM - Chi nhánh 2\",\n      \"address\": \"456 Quận 1, TP.HCM\",\n      \"createdAt\": \"2026-05-18T10:32:54.679Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.679Z\"\n    },\n    \"User\": {\n      \"id\": 1,\n      \"username\": \"admin\"\n    }\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-04e5a834-e549-4d22-9441-1a7c294ce13a"
+              }
+            ],
+            "createdAt": "2026-05-13T21:10:46.000Z",
+            "updatedAt": "2026-05-13T21:12:07.000Z",
+            "uid": "54636021-59df72f5-3b2b-412e-98b3-05d51f95896a"
+          },
+          {
+            "name": "Order History",
+            "event": [
+              {
+                "script": {
+                  "type": "text/javascript",
+                  "exec": [
+                    "pm.test(\"Order history should be accessible\", function () {",
+                    "    pm.response.to.have.status(200);",
+                    "});",
+                    "if (pm.environment.get(\"username\") === \"staff1\") {",
+                    "    pm.test(\"Staff should only see their own branch orders\", function () {",
+                    "        const response = pm.response.json();",
+                    "        if (Array.isArray(response)) {",
+                    "            response.forEach(order => {",
+                    "                pm.expect(order.branchId).to.equal(1); // staff1 is in branch 1",
+                    "            });",
+                    "        }",
+                    "    });",
+                    "}"
+                  ]
+                },
+                "listen": "test"
+              }
+            ],
+            "id": "23661f8f-a757-28c9-9c6c-0a89ab4ba7ca",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/orders/history",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "orders",
+                  "history"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "2a80582e-69b0-48f9-a92a-cda2d29f4db6",
+                "name": "Get Order History",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/orders/history",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "orders",
+                      "history"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "2"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"2-l9Fw4VUO7kr8CvBlt4zaMCqXZ0w\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "[]",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-2a80582e-69b0-48f9-a92a-cda2d29f4db6"
+              }
+            ],
+            "createdAt": "2026-05-14T12:03:41.000Z",
+            "updatedAt": "2026-05-14T12:17:30.000Z",
+            "uid": "54636021-23661f8f-a757-28c9-9c6c-0a89ab4ba7ca"
+          },
+          {
+            "name": "Get All Orders",
+            "event": [
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "const username = pm.environment.get(\"username\");",
+                    "if (username === \"staff1\") {",
+                    "    pm.test(\"Staff should be forbidden from getting all orders\", function () {",
+                    "        pm.response.to.have.status(403);",
+                    "    });",
+                    "} else if (username === \"admin\") {",
+                    "    pm.test(\"Admin should be able to get all orders\", function () {",
+                    "        pm.response.to.have.status(200);",
+                    "    });",
+                    "}"
+                  ],
+                  "type": "text/javascript"
+                }
+              }
+            ],
+            "id": "1c76a647-89e9-e4ea-5e85-b126c2cea274",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/orders",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "orders"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "b3d05cbb-d631-4e19-8a0d-643ef4249b40",
+                "name": "Admin Get All Orders",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/orders",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "orders"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "1099"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"44b-l/hclwVx6MIK482kkGKegfEuQVk\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "[\n  {\n    \"id\": 1,\n    \"staffId\": 1,\n    \"branchId\": 2,\n    \"customerId\": 1,\n    \"totalAmount\": 3199.9700000000003,\n    \"paymentMethod\": \"cash\",\n    \"syncStatus\": \"pending\",\n    \"createdAt\": \"2026-05-18T10:32:54.811Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.824Z\",\n    \"OrderItems\": [\n      {\n        \"id\": 1,\n        \"orderId\": 1,\n        \"productId\": 1,\n        \"quantity\": 2,\n        \"price\": 999.99,\n        \"createdAt\": \"2026-05-18T10:32:54.817Z\",\n        \"updatedAt\": \"2026-05-18T10:32:54.817Z\",\n        \"Product\": {\n          \"id\": 1,\n          \"name\": \"iPhone 15 Pro\",\n          \"price\": 999.99,\n          \"description\": \"Latest Apple flagship with titanium frame\",\n          \"createdAt\": \"2026-05-18T10:32:54.758Z\",\n          \"updatedAt\": \"2026-05-18T10:32:54.758Z\"\n        }\n      },\n      {\n        \"id\": 2,\n        \"orderId\": 1,\n        \"productId\": 2,\n        \"quantity\": 1,\n        \"price\": 1199.99,\n        \"createdAt\": \"2026-05-18T10:32:54.823Z\",\n        \"updatedAt\": \"2026-05-18T10:32:54.823Z\",\n        \"Product\": {\n          \"id\": 2,\n          \"name\": \"Samsung Galaxy S24 Ultra\",\n          \"price\": 1199.99,\n          \"description\": \"Premium Android with AI features and S-Pen\",\n          \"createdAt\": \"2026-05-18T10:32:54.762Z\",\n          \"updatedAt\": \"2026-05-18T10:32:54.762Z\"\n        }\n      }\n    ],\n    \"Branch\": {\n      \"id\": 2,\n      \"name\": \"TP.HCM - Chi nhánh 2\",\n      \"address\": \"456 Quận 1, TP.HCM\",\n      \"createdAt\": \"2026-05-18T10:32:54.679Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.679Z\"\n    },\n    \"User\": {\n      \"id\": 1,\n      \"username\": \"admin\"\n    }\n  }\n]",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-b3d05cbb-d631-4e19-8a0d-643ef4249b40"
+              },
+              {
+                "id": "85f02811-5d95-f81f-c396-205b0d948d82",
+                "name": "Get All Orders Forbidden (Staff)",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/orders",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "orders"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:29.000Z",
+                "updatedAt": "2026-05-21T15:23:29.000Z",
+                "uid": "54636021-85f02811-5d95-f81f-c396-205b0d948d82"
+              }
+            ],
+            "createdAt": "2026-05-14T12:03:45.000Z",
+            "updatedAt": "2026-05-21T15:23:29.000Z",
+            "uid": "54636021-1c76a647-89e9-e4ea-5e85-b126c2cea274"
+          },
+          {
+            "name": "Get Order by ID",
+            "id": "7cae9089-2a1d-b8d1-7759-e943063ed229",
+            "request": {
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/orders/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "orders",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "336c78fc-3cb4-41ca-81cb-8aa459ba50df",
+                "name": "Get Order by ID Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/orders/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "orders",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "1097"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"449-MF60ix8kSpY2Nhwz+4rRDLUwGcY\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"id\": 1,\n  \"staffId\": 1,\n  \"branchId\": 2,\n  \"customerId\": 1,\n  \"totalAmount\": 3199.9700000000003,\n  \"paymentMethod\": \"cash\",\n  \"syncStatus\": \"pending\",\n  \"createdAt\": \"2026-05-18T10:32:54.811Z\",\n  \"updatedAt\": \"2026-05-18T10:32:54.824Z\",\n  \"OrderItems\": [\n    {\n      \"id\": 1,\n      \"orderId\": 1,\n      \"productId\": 1,\n      \"quantity\": 2,\n      \"price\": 999.99,\n      \"createdAt\": \"2026-05-18T10:32:54.817Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.817Z\",\n      \"Product\": {\n        \"id\": 1,\n        \"name\": \"iPhone 15 Pro\",\n        \"price\": 999.99,\n        \"description\": \"Latest Apple flagship with titanium frame\",\n        \"createdAt\": \"2026-05-18T10:32:54.758Z\",\n        \"updatedAt\": \"2026-05-18T10:32:54.758Z\"\n      }\n    },\n    {\n      \"id\": 2,\n      \"orderId\": 1,\n      \"productId\": 2,\n      \"quantity\": 1,\n      \"price\": 1199.99,\n      \"createdAt\": \"2026-05-18T10:32:54.823Z\",\n      \"updatedAt\": \"2026-05-18T10:32:54.823Z\",\n      \"Product\": {\n        \"id\": 2,\n        \"name\": \"Samsung Galaxy S24 Ultra\",\n        \"price\": 1199.99,\n        \"description\": \"Premium Android with AI features and S-Pen\",\n        \"createdAt\": \"2026-05-18T10:32:54.762Z\",\n        \"updatedAt\": \"2026-05-18T10:32:54.762Z\"\n      }\n    }\n  ],\n  \"Branch\": {\n    \"id\": 2,\n    \"name\": \"TP.HCM - Chi nhánh 2\",\n    \"address\": \"456 Quận 1, TP.HCM\",\n    \"createdAt\": \"2026-05-18T10:32:54.679Z\",\n    \"updatedAt\": \"2026-05-18T10:32:54.679Z\"\n  },\n  \"User\": {\n    \"id\": 1,\n    \"username\": \"admin\"\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-336c78fc-3cb4-41ca-81cb-8aa459ba50df"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:51.000Z",
+            "updatedAt": "2026-05-14T12:39:51.000Z",
+            "uid": "54636021-7cae9089-2a1d-b8d1-7759-e943063ed229"
+          },
+          {
+            "name": "Delete Order",
+            "id": "3604c3f3-26e2-d95c-7601-337ad8e5533f",
+            "request": {
+              "method": "DELETE",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/orders/1",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "orders",
+                  "1"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "8643aee6-2ce1-4481-a852-2ab6e86c2bcd",
+                "name": "Delete Order Successful",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/orders/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "orders",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "40"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:54 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"28-44+JLRWSatTeIeuVYDYOdZPIRuM\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Order deleted successfully\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-8643aee6-2ce1-4481-a852-2ab6e86c2bcd"
+              },
+              {
+                "id": "9e00df46-32ff-b5ec-1b26-c94ff355e1a6",
+                "name": "Delete Order Forbidden (Staff)",
+                "originalRequest": {
+                  "method": "DELETE",
+                  "header": [],
+                  "url": {
+                    "raw": "{{base_url}}/orders/1",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "orders",
+                      "1"
+                    ]
+                  }
+                },
+                "status": "Forbidden",
+                "code": 403,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Access denied. Insufficient permissions.\"\n}",
+                "createdAt": "2026-05-21T15:23:29.000Z",
+                "updatedAt": "2026-05-21T15:23:29.000Z",
+                "uid": "54636021-9e00df46-32ff-b5ec-1b26-c94ff355e1a6"
+              }
+            ],
+            "createdAt": "2026-05-14T12:39:51.000Z",
+            "updatedAt": "2026-05-21T15:23:29.000Z",
+            "uid": "54636021-3604c3f3-26e2-d95c-7601-337ad8e5533f"
+          }
+        ],
+        "id": "4845004d-aea9-40ba-89bc-f9e6f7dc1f79",
+        "createdAt": "2026-05-13T20:22:45.000Z",
+        "updatedAt": "2026-05-14T12:39:51.000Z",
+        "uid": "54636021-4845004d-aea9-40ba-89bc-f9e6f7dc1f79"
+      },
+      {
+        "name": "Sync",
+        "item": [
+          {
+            "name": "Sync Orders",
+            "id": "43fc5fdb-228b-1a7b-b3c1-822d8130443b",
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"branchId\": 1,\n  \"orders\": [\n    {\n      \"branchId\": 1,\n      \"customerId\": 1,\n      \"paymentMethod\": \"cash\",\n      \"items\": [\n        {\n          \"productId\": 1,\n          \"quantity\": 5\n        }\n      ]\n    }\n  ]\n}"
+              },
+              "url": {
+                "raw": "{{base_url}}/sync/orders",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "sync",
+                  "orders"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "d1b78946-a0f2-40bc-9f67-f90f630b8959",
+                "name": "Sync Orders Successful",
+                "originalRequest": {
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"branchId\": 1,\n  \"orders\": [\n    {\n      \"branchId\": 1,\n      \"customerId\": 1,\n      \"paymentMethod\": \"cash\",\n      \"items\": [\n        {\n          \"productId\": 1,\n          \"quantity\": 5\n        }\n      ]\n    }\n  ]\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/sync/orders",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "sync",
+                      "orders"
+                    ]
+                  }
+                },
+                "status": "Bad Request",
+                "code": 400,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "61"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:55 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"3d-WjVsRQNlB6yiMPWQY6T4OCE5D64\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Cannot read properties of null (reading 'role')\"\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-d1b78946-a0f2-40bc-9f67-f90f630b8959"
+              },
+              {
+                "id": "78ebff6c-710f-3870-be7d-5e10e90f57fd",
+                "name": "Sync Orders Successful",
+                "originalRequest": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"branchId\": 1,\n  \"orders\": [\n    {\n      \"branchId\": 1,\n      \"customerId\": 1,\n      \"paymentMethod\": \"cash\",\n      \"items\": [\n        {\n          \"productId\": 1,\n          \"quantity\": 5\n        }\n      ]\n    }\n  ]\n}"
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/sync/orders",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "sync",
+                      "orders"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": null,
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Orders synced successfully\",\n  \"data\": {\n    \"synced\": 2,\n    \"failed\": 0\n  }\n}",
+                "createdAt": "2026-05-21T15:05:48.000Z",
+                "updatedAt": "2026-05-21T15:05:48.000Z",
+                "uid": "54636021-78ebff6c-710f-3870-be7d-5e10e90f57fd"
+              }
+            ],
+            "createdAt": "2026-05-14T13:00:13.000Z",
+            "updatedAt": "2026-05-21T15:05:48.000Z",
+            "uid": "54636021-43fc5fdb-228b-1a7b-b3c1-822d8130443b"
+          },
+          {
+            "name": "Get Sync Status",
+            "id": "564df763-10f8-45a7-9932-489100222b5a",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/sync/status",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "sync",
+                  "status"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "3f555daa-bb62-4998-9c0b-ee37196f6762",
+                "name": "Get Sync Status Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/sync/status",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "sync",
+                      "status"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "35"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:55 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"23-xQVwHUw4jiH2GR4DTl/548kJs2c\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"pending\": 0,\n  \"synced\": 0,\n  \"failed\": 0\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-3f555daa-bb62-4998-9c0b-ee37196f6762"
+              }
+            ],
+            "createdAt": "2026-05-18T10:33:18.000Z",
+            "updatedAt": "2026-05-18T10:33:18.000Z",
+            "uid": "54636021-564df763-10f8-45a7-9932-489100222b5a"
+          },
+          {
+            "name": "Get Sync Pending Orders",
+            "id": "51cd8ba5-ed59-49fa-bbec-8470263483aa",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/sync/pending",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "sync",
+                  "pending"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "29c05d97-eedf-414b-b54c-4888068a26c2",
+                "name": "Get Pending Sync Orders Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/sync/pending",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "sync",
+                      "pending"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "61"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:55 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"3d-tSZao/rEU4DYKKb+95Q8RPFKZak\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Pending orders retrieved successfully\",\n  \"data\": []\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-29c05d97-eedf-414b-b54c-4888068a26c2"
+              }
+            ],
+            "createdAt": "2026-05-18T10:33:18.000Z",
+            "updatedAt": "2026-05-18T10:33:18.000Z",
+            "uid": "54636021-51cd8ba5-ed59-49fa-bbec-8470263483aa"
+          },
+          {
+            "name": "Update Sync Status",
+            "id": "5b694870-c5d1-4a4a-8a2d-6c3e1e491cfe",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "PUT",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n  \"orderIds\": [\n    1\n  ],\n  \"status\": \"synced\"\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{base_url}}/sync/status",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "sync",
+                  "status"
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "d483730f-17fa-48f9-b82d-b4c8a029eb9d",
+                "name": "Update Sync Status Successful",
+                "originalRequest": {
+                  "method": "PUT",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"orderIds\": [\n    1\n  ],\n  \"status\": \"synced\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{base_url}}/sync/status",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "sync",
+                      "status"
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "87"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:55 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"57-DrMA7cnafXjELTdGAJGk6atCi/o\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"message\": \"Sync status updated successfully\",\n  \"data\": {\n    \"success\": true,\n    \"updatedCount\": 1\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-d483730f-17fa-48f9-b82d-b4c8a029eb9d"
+              }
+            ],
+            "createdAt": "2026-05-18T10:33:18.000Z",
+            "updatedAt": "2026-05-18T10:33:18.000Z",
+            "uid": "54636021-5b694870-c5d1-4a4a-8a2d-6c3e1e491cfe"
+          }
+        ],
+        "id": "1c13da03-4d23-424d-aa44-65a87b4754d9",
+        "createdAt": "2026-05-18T10:33:18.000Z",
+        "updatedAt": "2026-05-18T10:33:18.000Z",
+        "uid": "54636021-1c13da03-4d23-424d-aa44-65a87b4754d9"
+      },
+      {
+        "name": "Dashboard",
+        "item": [
+          {
+            "name": "Get Dashboard Stats",
+            "id": "8f2cc2cb-0a50-439f-ab0b-8631d03f793a",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "token",
+                    "value": "{{token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [],
+              "url": {
+                "raw": "{{base_url}}/dashboard/stats?branchId=all",
+                "host": [
+                  "{{base_url}}"
+                ],
+                "path": [
+                  "dashboard",
+                  "stats"
+                ],
+                "query": [
+                  {
+                    "key": "branchId",
+                    "value": "all"
+                  }
+                ]
+              }
+            },
+            "response": [
+              {
+                "id": "f282f60e-d13e-489c-8872-b238e0d4341a",
+                "name": "Get Dashboard Stats Successful",
+                "originalRequest": {
+                  "method": "GET",
+                  "header": [
+                    {
+                      "key": "Authorization",
+                      "value": "Bearer <REDACTED_TOKEN>"
+                    }
+                  ],
+                  "url": {
+                    "raw": "{{base_url}}/dashboard/stats?branchId=all",
+                    "host": [
+                      "{{base_url}}"
+                    ],
+                    "path": [
+                      "dashboard",
+                      "stats"
+                    ],
+                    "query": [
+                      {
+                        "key": "branchId",
+                        "value": "all"
+                      }
+                    ]
+                  }
+                },
+                "status": "OK",
+                "code": 200,
+                "_postman_previewlanguage": "json",
+                "header": [
+                  {
+                    "key": "access-control-allow-origin",
+                    "value": "*"
+                  },
+                  {
+                    "key": "connection",
+                    "value": "keep-alive"
+                  },
+                  {
+                    "key": "content-length",
+                    "value": "133"
+                  },
+                  {
+                    "key": "content-type",
+                    "value": "application/json; charset=utf-8"
+                  },
+                  {
+                    "key": "date",
+                    "value": "Mon, 18 May 2026 10:32:55 GMT"
+                  },
+                  {
+                    "key": "etag",
+                    "value": "W/\"85-RfybIiX6uaa+7RBOMfi6OTReWbA\""
+                  },
+                  {
+                    "key": "keep-alive",
+                    "value": "timeout=5"
+                  },
+                  {
+                    "key": "x-powered-by",
+                    "value": "Express"
+                  }
+                ],
+                "cookie": [],
+                "responseTime": null,
+                "body": "{\n  \"success\": true,\n  \"data\": {\n    \"totalRevenue\": 0,\n    \"totalOrders\": 0,\n    \"lowStockCount\": 3,\n    \"totalProducts\": 3,\n    \"recentOrders\": [],\n    \"revenueByBranch\": []\n  }\n}",
+                "createdAt": "2026-05-18T10:33:18.000Z",
+                "updatedAt": "2026-05-18T10:33:18.000Z",
+                "uid": "54636021-f282f60e-d13e-489c-8872-b238e0d4341a"
+              }
+            ],
+            "createdAt": "2026-05-18T10:33:18.000Z",
+            "updatedAt": "2026-05-18T10:33:18.000Z",
+            "uid": "54636021-8f2cc2cb-0a50-439f-ab0b-8631d03f793a"
+          }
+        ],
+        "id": "89d13047-e949-447e-8b84-a0cffb559343",
+        "createdAt": "2026-05-18T10:33:18.000Z",
+        "updatedAt": "2026-05-18T10:33:18.000Z",
+        "uid": "54636021-89d13047-e949-447e-8b84-a0cffb559343"
+      }
+    ]
+  }
+}

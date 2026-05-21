@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{base_url}}/auth/profile"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Profile.resources/examples
+order: 2000

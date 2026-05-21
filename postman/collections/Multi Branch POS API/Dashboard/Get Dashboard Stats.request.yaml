@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{base_url}}/dashboard/stats?branchId=all"
+method: GET
+queryParams:
+  branchId: all
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Get Dashboard Stats.resources/examples
+order: 1000

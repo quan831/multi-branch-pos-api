@@ -1,0 +1,5 @@
+$kind: http-request
+url: "{{base_url}}/customers"
+method: GET
+examples: ./.resources/Get All Customers.resources/examples
+order: 4000

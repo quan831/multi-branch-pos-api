@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{base_url}}/branches"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Branch A\",\r
+
+    \  \"address\": \"Thai Nguyen\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Create Branch.resources/examples
+order: 1000

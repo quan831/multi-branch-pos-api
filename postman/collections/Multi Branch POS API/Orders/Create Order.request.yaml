@@ -1,0 +1,40 @@
+$kind: http-request
+url: "{{base_url}}/orders"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"branchId\": 2,\r
+
+    \  \"customerId\": 1,\r
+
+    \  \"paymentMethod\": \"cash\",\r
+
+    \  \"items\": [\r
+
+    \    {\r
+
+    \      \"productId\": 1,\r
+
+    \      \"quantity\": 2\r
+
+    \    },\r
+
+    \    {\r
+
+    \      \"productId\": 2,\r
+
+    \      \"quantity\": 1\r
+
+    \    }\r
+
+    \  ]\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Create Order.resources/examples
+order: 1000

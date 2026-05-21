@@ -1,0 +1,21 @@
+owner: "54636021"
+team: "15758313"
+lastUpdatedBy: "54636021"
+lastRevision: 1779380176000
+name: Development (Admin)
+color: null
+values:
+  - key: base_url
+    value: https://cpapi.jamesnguyen831.id.vn/api/
+    enabled: true
+  - key: username
+    value: admin
+    enabled: true
+  - key: password
+    value: password123
+    enabled: true
+  - key: token
+    value: ""
+    enabled: true
+createdAt: 2026-05-21T15:22:59.000Z
+updatedAt: 2026-05-21T16:16:16.000Z

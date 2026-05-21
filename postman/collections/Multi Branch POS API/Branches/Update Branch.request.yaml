@@ -1,0 +1,34 @@
+$kind: http-request
+url: "{{base_url}}/branches/1"
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Branch Updated\",\r
+
+    \  \"address\": \"Ha Noi\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      const username = pm.environment.get("username");
+      if (username === "admin") {
+          pm.test("Status is 200 or 201", function () { pm.expect(pm.response.code).to.be.oneOf([200, 201]); });
+          pm.test("Branch updated", function () {
+              const response = pm.response.json();
+              pm.expect(response.name).to.equal("Branch Updated");
+          });
+      } else if (username === "staff1") {
+          pm.test("Staff should be forbidden from updating branch", function () {
+              pm.response.to.have.status(403);
+          });
+      }
+    language: text/javascript
+examples: ./.resources/Update Branch.resources/examples
+order: 3000

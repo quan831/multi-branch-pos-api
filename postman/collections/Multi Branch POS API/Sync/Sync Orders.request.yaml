@@ -1,0 +1,28 @@
+$kind: http-request
+url: "{{base_url}}/sync/orders"
+method: POST
+body:
+  type: text
+  content: |-
+    {
+      "branchId": 1,
+      "orders": [
+        {
+          "branchId": 1,
+          "customerId": 1,
+          "paymentMethod": "cash",
+          "items": [
+            {
+              "productId": 1,
+              "quantity": 5
+            }
+          ]
+        }
+      ]
+    }
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Sync Orders.resources/examples
+order: 1000

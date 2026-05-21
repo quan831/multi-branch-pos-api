@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{base_url}}/sync/status"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Get Sync Status.resources/examples
+order: 2000

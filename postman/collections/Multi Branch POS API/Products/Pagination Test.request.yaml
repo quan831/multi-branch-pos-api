@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{base_url}}/products?page=1&limit=1"
+method: GET
+queryParams:
+  page: "1"
+  limit: "1"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Pagination Test.resources/examples
+order: 4000

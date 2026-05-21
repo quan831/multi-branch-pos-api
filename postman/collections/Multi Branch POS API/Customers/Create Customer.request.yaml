@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{base_url}}/customers"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"name\": \"Nguyen Van A\",\r
+
+    \  \"phone\": \"0987654321\",\r
+
+    \  \"email\": \"a@gmail.com\"\r
+
+    }"
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Create Customer.resources/examples
+order: 1000

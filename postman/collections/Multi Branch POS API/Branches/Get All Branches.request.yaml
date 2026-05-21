@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{base_url}}/branches"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test("Status is 200", function () { pm.response.to.have.status(200); });
+      pm.test("Branches returned", function () {
+          const response = pm.response.json();
+          pm.expect(response).to.be.an("array");
+          pm.expect(response.length).to.be.at.least(1);
+      });
+    language: text/javascript
+examples: ./.resources/Get All Branches.resources/examples
+order: 2000

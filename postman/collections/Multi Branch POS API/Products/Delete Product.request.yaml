@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{base_url}}/products/1"
+method: DELETE
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+examples: ./.resources/Delete Product.resources/examples
+order: 6000

@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{base_url}}/orders"
+method: GET
+auth:
+  type: bearer
+  credentials:
+    token: "{{token}}"
+scripts:
+  - type: afterResponse
+    code: |-
+      const username = pm.environment.get("username");
+      if (username === "staff1") {
+          pm.test("Staff should be forbidden from getting all orders", function () {
+              pm.response.to.have.status(403);
+          });
+      } else if (username === "admin") {
+          pm.test("Admin should be able to get all orders", function () {
+              pm.response.to.have.status(200);
+          });
+      }
+    language: text/javascript
+examples: ./.resources/Get All Orders.resources/examples
+order: 3000

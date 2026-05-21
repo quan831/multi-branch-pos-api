@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{base_url}}/customers/1"
+method: PUT
+body:
+  type: text
+  content: '{"name": "Updated Name", "phone": "0988888888", "email": "updated@gmail.com"}'
+examples: ./.resources/Update Customer.resources/examples
+order: 6000
