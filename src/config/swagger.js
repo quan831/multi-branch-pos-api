@@ -84,6 +84,8 @@ const options = {
                 Order: {
                     type: "object",
                     properties: {
+                        id: { type: "integer" },
+                        staffId: { type: "integer" },
                         branchId: { type: "integer" },
                         customerId: { type: "integer" },
                         totalAmount: {
