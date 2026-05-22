@@ -1,6 +1,7 @@
 require("dotenv").config();
 const app = require("./src/app");
 const sequelize = require("./src/config/database");
+const logger = require("./src/utils/logger");
 
 require("./src/models/product.model");
 require("./src/models/branch.model");
@@ -15,22 +16,22 @@ const PORT = process.env.PORT || 3000;
 
 sequelize.sync()
     .then(() => {
-        console.log("Database connected");
+        logger.info("Database connected");
 
         const server = app.listen(PORT, () => {
-            console.log(`Server running on port ${PORT}`);
+            logger.info(`Server running on port ${PORT}`);
         });
 
         server.on('error', (err) => {
             if (err.code === 'EADDRINUSE') {
-                console.error(`Error: Port ${PORT} is already in use. Please close the process using this port and try again.`);
+                logger.error(`Error: Port ${PORT} is already in use. Please close the process using this port and try again.`);
                 process.exit(1);
             } else {
-                console.error('Server error:', err);
+                logger.error('Server error:', err);
             }
         });
     })
     .catch(err => {
-        console.error("Database connection error:", err);
+        logger.error("Database connection error:", err);
         process.exit(1);
     });

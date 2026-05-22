@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const logger = require("./utils/logger");
 
 const productRoutes = require("./routes/product.routes");
 const branchRoutes = require("./routes/branch.routes");
@@ -16,7 +17,14 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
+const morganFormat = process.env.NODE_ENV !== "production" ? "dev" : "combined";
+app.use(
+  morgan(morganFormat, {
+    stream: {
+      write: (message) => logger.info(message.trim()),
+    },
+  })
+);
 
 app.use("/api/products", productRoutes);
 app.use("/api/branches", branchRoutes);
