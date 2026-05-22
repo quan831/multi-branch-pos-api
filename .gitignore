@@ -4,6 +4,7 @@
 .idea
 .resources
 .postman
+/logs
 
 # dependencies
 /node_modules
