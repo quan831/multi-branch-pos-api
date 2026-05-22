@@ -5,6 +5,8 @@ const router = express.Router();
 const authController = require("../controllers/auth.controller");
 
 const {verifyToken} = require("../middlewares/auth.middleware");
+const {validate} = require("../middlewares/validate.middleware");
+const authValidation = require("../validations/auth.validation");
 
 /**
  * @swagger
@@ -29,7 +31,7 @@ const {verifyToken} = require("../middlewares/auth.middleware");
  *       200:
  *         description: Login successful, returns JWT
  */
-router.post("/login", authController.login);
+router.post("/login", authValidation.login, validate, authController.login);
 
 /**
  * @swagger

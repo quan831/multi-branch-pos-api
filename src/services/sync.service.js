@@ -5,10 +5,6 @@ const orderService = require("./order.service");
 
 const syncOrders = async (orders) => {
 
-    if (!orders || !Array.isArray(orders)) {
-        throw new Error("Orders array is required");
-    }
-
     const syncedOrders = [];
 
     for (const order of orders) {
@@ -91,9 +87,6 @@ const getPendingOrders = async () => {
 };
 
 const updateSyncStatus = async (orderIds, status = "synced") => {
-    if (!orderIds || !Array.isArray(orderIds)) {
-        throw new Error("orderIds array is required");
-    }
 
     await Order.update(
         { syncStatus: status },

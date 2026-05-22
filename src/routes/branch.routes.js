@@ -11,6 +11,8 @@ const {
 const {
     authorizeRoles
 } = require("../middlewares/role.middleware");
+const { validate } = require("../middlewares/validate.middleware");
+const branchValidation = require("../validations/branch.validation");
 
 /**
  * @swagger
@@ -71,7 +73,7 @@ router.get("/:id", verifyToken, branchController.getBranchById);
  *       201:
  *         description: Branch created
  */
-router.post("/", verifyToken, authorizeRoles("admin"), branchController.createBranch);
+router.post("/", verifyToken, authorizeRoles("admin"), branchValidation.create, validate, branchController.createBranch);
 
 /**
  * @swagger
@@ -97,7 +99,7 @@ router.post("/", verifyToken, authorizeRoles("admin"), branchController.createBr
  *       200:
  *         description: Branch updated
  */
-router.put("/:id", verifyToken, authorizeRoles("admin"), branchController.updateBranch);
+router.put("/:id", verifyToken, authorizeRoles("admin"), branchValidation.update, validate, branchController.updateBranch);
 
 /**
  * @swagger

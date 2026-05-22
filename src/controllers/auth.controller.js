@@ -4,11 +4,7 @@ const login = async (req, res) => {
     try {
         const { username, password } = req.body;
 
-        if (!username || !password) {
-            return res.status(400).json({
-                message: "Username and password are required"
-            });
-        }
+
 
         const result = await authService.login(
             username,

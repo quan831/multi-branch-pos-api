@@ -5,6 +5,8 @@ const router = express.Router();
 const syncController = require("../controllers/sync.controller");
 
 const {verifyToken} = require("../middlewares/auth.middleware");
+const { validate } = require("../middlewares/validate.middleware");
+const syncValidation = require("../validations/sync.validation");
 
 /**
  * @swagger
@@ -40,6 +42,8 @@ const {verifyToken} = require("../middlewares/auth.middleware");
 router.post(
     "/orders",
     verifyToken,
+    syncValidation.pushData,
+    validate,
     syncController.syncOrders
 );
 
@@ -156,6 +160,8 @@ router.get(
 router.put(
     "/status",
     verifyToken,
+    syncValidation.pullStatus,
+    validate,
     syncController.updateSyncStatus
 );
 

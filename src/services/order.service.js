@@ -24,28 +24,6 @@ const createOrder = async (orderData) => {
             items
         } = orderData;
 
-        if (!items || items.length === 0) {
-            throw new Error(
-                "Order items are required"
-            );
-        }
-
-        const validPaymentMethods = [
-            "cash",
-            "card",
-            "transfer"
-        ];
-
-        if (
-            !validPaymentMethods.includes(
-                paymentMethod
-            )
-        ) {
-            throw new Error(
-                "Invalid payment method"
-            );
-        }
-
         const branch =
             await Branch.findByPk(
                 branchId
@@ -100,21 +78,6 @@ const createOrder = async (orderData) => {
             }, transaction);
 
         for (const item of items) {
-
-            if (
-                !item.productId ||
-                !item.quantity
-            ) {
-                throw new Error(
-                    "Invalid order item"
-                );
-            }
-
-            if (item.quantity <= 0) {
-                throw new Error(
-                    "Quantity must be greater than 0"
-                );
-            }
 
             const product =
                 await Product.findByPk(

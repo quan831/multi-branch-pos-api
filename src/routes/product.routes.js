@@ -13,6 +13,8 @@ const {
 const {
     authorizeRoles
 } = require("../middlewares/role.middleware");
+const { validate } = require("../middlewares/validate.middleware");
+const productValidation = require("../validations/product.validation");
 
 /**
  * @swagger
@@ -87,6 +89,8 @@ router.post(
     "/",
     verifyToken,
     authorizeRoles("admin"),
+    productValidation.create,
+    validate,
     productController.createProduct
 );
 
@@ -118,6 +122,8 @@ router.put(
     "/:id",
     verifyToken,
     authorizeRoles("admin"),
+    productValidation.update,
+    validate,
     productController.updateProduct
 );
 
