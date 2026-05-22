@@ -15,6 +15,8 @@
 *   **Hàng Đợi Đồng Bộ Hóa Ngoại Tuyến (Offline Synchronization Engine):**
     *   Cung cấp các API chuyên dụng giúp các Client bán hàng Desktop (chạy ngoại tuyến) có thể đẩy hóa đơn bán lẻ tạm lưu khi mất mạng lên máy chủ trung tâm ngay khi trực tuyến trở lại.
     *   Bảo đảm tính toàn vẹn dữ liệu, giải quyết xung đột mã hóa đơn và tự động điều chỉnh số lượng tồn kho thực tế của chi nhánh sau khi đồng bộ thành công.
+*   **Kiểm Tra & Xác Thực Dữ Liệu Chặt Chẽ (Data Validation):** Sử dụng `express-validator` để ràng buộc kiểu dữ liệu, định dạng và tính hợp lệ của mọi thông tin đầu vào trước khi xử lý, đảm bảo hệ thống luôn ổn định và an toàn.
+*   **Hệ Thống Ghi Vết Nâng Cao (Advanced Logging System):** Tích hợp `winston` và `morgan` theo dõi tự động các thao tác hệ thống, HTTP request, và báo lỗi kịp thời vào các tệp log riêng biệt.
 *   **Báo Cáo & Phân Tích (Admin Analytics Dashboard):** Tổng hợp doanh thu theo dòng thời gian, xếp hạng doanh số giữa các chi nhánh, giám sát mặt hàng sắp hết hàng (Low Stock), và danh sách giao dịch mới nhất.
 *   **Tài Liệu API Tự Động (Swagger Integration):** Tích hợp công cụ **Swagger UI** giúp lập trình viên tra cứu và thử nghiệm trực tiếp toàn bộ các endpoint API tại địa chỉ `/api-docs`.
 
@@ -25,9 +27,9 @@
 *   **Runtime:** Node.js (Yêu cầu phiên bản `>= 22.0.0`)
 *   **Framework:** Express.js (v5.x hỗ trợ các tính năng routing hiện đại)
 *   **Database ORM:** Sequelize v6 (Sử dụng driver `sqlite3` làm cơ sở dữ liệu mặc định, dễ dàng mở rộng sang PostgreSQL, MySQL hoặc MS SQL Server bằng cách cấu hình lại kết nối).
-*   **Security:** `bcryptjs` để băm mật khẩu nâng cao, `jsonwebtoken` bảo mật luồng API qua tiêu chuẩn Bearer Token.
+*   **Security & Validation:** `bcryptjs` để băm mật khẩu, `jsonwebtoken` để cấp phát Bearer Token, và `express-validator` để kiểm duyệt dữ liệu đầu vào.
 *   **API Documentation:** `swagger-jsdoc` & `swagger-ui-express` để viết tài liệu trực tiếp trong code theo chuẩn OpenAPI 3.0.
-*   **Logs & Development:** `morgan` ghi vết HTTP Requests, `nodemon` hỗ trợ reload server tức thì khi code thay đổi.
+*   **Logs & Development:** `winston` kết hợp `morgan` tạo hệ thống ghi vết nhật ký hệ thống mạnh mẽ, lưu trữ theo file ngày; `nodemon` hỗ trợ reload server tức thì khi code thay đổi.
 
 ---
 
@@ -35,6 +37,7 @@
 
 ```text
 multi-branch-pos-api/
+├── logs/                   # Chứa các file nhật ký hệ thống (Winston logs)
 ├── src/
 │   ├── config/             # Cấu hình hệ thống (Kết nối DB, Swagger...)
 │   │   ├── database.js     # Khởi tạo kết nối Sequelize SQLite
@@ -60,7 +63,10 @@ multi-branch-pos-api/
 │   ├── controllers/        # Điều hướng nghiệp vụ logic tiếp nhận từ route
 │   ├── services/           # Xử lý Logic Nghiệp vụ (Business Logic Layer)
 │   ├── repositories/       # Tương tác trực tiếp với Database qua Sequelize Model
-│   ├── middlewares/        # Bộ lọc xử lý (Xác thực Token, kiểm tra quyền hạn...)
+│   ├── validations/        # Các schema kiểm tra dữ liệu đầu vào (Express-validator)
+│   ├── middlewares/        # Bộ lọc xử lý (Xác thực Token, kiểm tra quyền hạn, validation...)
+│   ├── utils/              # Các hàm tiện ích dùng chung
+│   │   └── logger.js       # Cấu hình Winston logger
 │   └── app.js              # Khởi tạo Express App và cấu hình Middleware toàn cục
 ├── postman/                # Các file Postman Collection & Environments để test API
 ├── .env                    # Biến môi trường cục bộ (Bảo mật)
