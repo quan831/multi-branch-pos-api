@@ -41,86 +41,105 @@ const options = {
                 User: {
                     type: "object",
                     properties: {
-                        id: { type: "integer" },
-                        username: { type: "string" },
-                        role: { type: "string" },
-                        branchId: { type: "integer",
-                        createdAt: { type: "string", format: "date-time" },
-                        updatedAt: { type: "string", format: "date-time" } }
+                        id: { type: "integer", example: 1, readOnly: true },
+                        username: { type: "string", example: "admin" },
+                        role: { type: "string", example: "admin" },
+                        branchId: { type: "integer", example: 1 },
+                        createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
+                        updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
                 },
-                Product: { type: "object", properties: { id: { type: "integer" },
-                        name: { type: "string" },
+                Product: { 
+                    type: "object", 
+                    properties: { 
+                        id: { type: "integer", example: 1, readOnly: true },
+                        name: { type: "string", example: "Cà phê sữa" },
                         price: {
                             type: "number",
-                            format: "double"
+                            format: "double",
+                            example: 25000
                         },
-                        description: { type: "string",
-                        createdAt: { type: "string", format: "date-time" },
-                        updatedAt: { type: "string", format: "date-time" } }
+                        description: { type: "string", example: "Cà phê sữa đá ngọt" },
+                        createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
+                        updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
                 },
-                Branch: { type: "object", properties: { id: { type: "integer" },
-                        name: { type: "string" },
-                        address: { type: "string",
-                        createdAt: { type: "string", format: "date-time" },
-                        updatedAt: { type: "string", format: "date-time" } }
+                Branch: { 
+                    type: "object", 
+                    properties: { 
+                        id: { type: "integer", example: 1, readOnly: true },
+                        name: { type: "string", example: "Chi nhánh Quận 1" },
+                        address: { type: "string", example: "123 Lê Lợi, Quận 1, TP.HCM" },
+                        createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
+                        updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
                 },
-                Customer: { type: "object", properties: { id: { type: "integer" },
-                        name: { type: "string" },
-                        phone: { type: "string" },
-                        email: { type: "string",
-                        createdAt: { type: "string", format: "date-time" },
-                        updatedAt: { type: "string", format: "date-time" } }
+                Customer: { 
+                    type: "object", 
+                    properties: { 
+                        id: { type: "integer", example: 1, readOnly: true },
+                        name: { type: "string", example: "Nguyễn Văn A" },
+                        phone: { type: "string", example: "0901234567" },
+                        email: { type: "string", example: "nguyenvana@example.com" },
+                        createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
+                        updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
                 },
-                Inventory: { type: "object", properties: { id: { type: "integer" },
-                        productId: { type: "integer" },
-                        branchId: { type: "integer" },
-                        quantity: { type: "integer",
-                        createdAt: { type: "string", format: "date-time" },
-                        updatedAt: { type: "string", format: "date-time" } }
+                Inventory: { 
+                    type: "object", 
+                    properties: { 
+                        id: { type: "integer", example: 1, readOnly: true },
+                        productId: { type: "integer", example: 1 },
+                        branchId: { type: "integer", example: 1 },
+                        quantity: { type: "integer", example: 100 },
+                        createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
+                        updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
                 },
                 Order: {
                     type: "object",
                     properties: {
-                        id: { type: "integer" },
-                        staffId: { type: "integer" },
-                        branchId: { type: "integer" },
-                        customerId: { type: "integer" },
+                        id: { type: "integer", example: 1, readOnly: true },
+                        staffId: { type: "integer", example: 1 },
+                        branchId: { type: "integer", example: 1 },
+                        customerId: { type: "integer", example: 1 },
                         totalAmount: {
                             type: "number",
-                            format: "double"
+                            format: "double",
+                            example: 50000
                         },
-                        paymentMethod: { type: "string" },
-                        syncStatus: { type: "string" },
+                        paymentMethod: { type: "string", example: "cash" },
+                        syncStatus: { type: "string", example: "pending" },
                         items: {
                             type: "array",
-                            items: { $ref: "#/components/schemas/OrderItem",
-                        createdAt: { type: "string", format: "date-time" },
-                        updatedAt: { type: "string", format: "date-time" } }
-                        }
+                            items: { $ref: "#/components/schemas/OrderItem" }
+                        },
+                        createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
+                        updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
                 },
-                OrderItem: { type: "object", properties: { id: { type: "integer" }, orderId: { type: "integer" },
-                        productId: { type: "integer" },
-                        quantity: { type: "integer" },
+                OrderItem: { 
+                    type: "object", 
+                    properties: { 
+                        id: { type: "integer", example: 1, readOnly: true }, 
+                        orderId: { type: "integer", example: 1 },
+                        productId: { type: "integer", example: 1 },
+                        quantity: { type: "integer", example: 2 },
                         price: {
                             type: "number",
                             format: "double",
-                        createdAt: { type: "string", format: "date-time" },
-                        updatedAt: { type: "string", format: "date-time" }
-                        }
+                            example: 25000
+                        },
+                        createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
+                        updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
                 },
                 LoginRequest: {
                     type: "object",
                     required: ["username", "password"],
                     properties: {
-                        username: { type: "string" },
-                        password: { type: "string" }
+                        username: { type: "string", example: "admin" },
+                        password: { type: "string", example: "123456" }
                     }
                 },
                 SyncOrdersRequest: {
@@ -138,12 +157,14 @@ const options = {
                     properties: {
                         orderIds: {
                             type: "array",
-                            items: { type: "integer" }
+                            items: { type: "integer" },
+                            example: [1, 2, 3]
                         },
                         status: {
                             type: "string",
                             enum: ["synced", "pending", "failed"],
-                            description: "New synchronization status for the specified orders"
+                            description: "New synchronization status for the specified orders",
+                            example: "synced"
                         }
                     }
                 }
