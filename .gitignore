@@ -5,7 +5,6 @@
 .resources
 .postman
 /logs
-package-lock.json
 
 # dependencies
 /node_modules
