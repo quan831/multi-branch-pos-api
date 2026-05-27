@@ -21,7 +21,8 @@ const createOrder = async (orderData) => {
             branchId,
             customerId,
             paymentMethod,
-            items
+            items,
+            syncStatus
         } = orderData;
 
         const branch =
@@ -74,7 +75,8 @@ const createOrder = async (orderData) => {
                 branchId,
                 customerId,
                 paymentMethod,
-                totalAmount: 0
+                totalAmount: 0,
+                syncStatus: syncStatus || "pending"
             }, transaction);
 
         for (const item of items) {
