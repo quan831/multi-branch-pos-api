@@ -75,6 +75,8 @@ router.get("/me", verifyToken, authController.getProfile);
  */
 router.post("/logout", verifyToken, authController.logout);
 
+let isSeeding = false;
+
 // Helper endpoint to seed database (local or remote) easily via HTTP
 router.get("/seed", async (req, res) => {
     // Bảo mật: Yêu cầu tham số secret để tránh người ngoài truy cập trái phép reset database
@@ -85,6 +87,14 @@ router.get("/seed", async (req, res) => {
             message: "Access Denied: Invalid or missing secret key!" 
         });
     }
+
+    if (isSeeding) {
+        return res.status(429).json({
+            success: false,
+            message: "Database is currently being seeded. Please try again later."
+        });
+    }
+    isSeeding = true;
 
     try {
         const { Product, Branch, Customer, User, Inventory } = require("../models/associations");
@@ -166,6 +176,8 @@ router.get("/seed", async (req, res) => {
     } catch (err) {
         console.error("Seeding error:", err);
         return res.status(500).json({ success: false, error: err.message });
+    } finally {
+        isSeeding = false;
     }
 });
 
