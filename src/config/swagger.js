@@ -53,13 +53,13 @@ const options = {
                     type: "object", 
                     properties: { 
                         id: { type: "integer", example: 1, readOnly: true },
-                        name: { type: "string", example: "Cà phê sữa" },
+                        name: { type: "string", example: "iPhone 15 Pro" },
                         price: {
                             type: "number",
                             format: "double",
-                            example: 25000
+                            example: 999.99
                         },
-                        description: { type: "string", example: "Cà phê sữa đá ngọt" },
+                        description: { type: "string", example: "Latest Apple flagship with titanium frame" },
                         createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
                         updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
@@ -100,16 +100,17 @@ const options = {
                     type: "object",
                     properties: {
                         id: { type: "integer", example: 1, readOnly: true },
-                        staffId: { type: "integer", example: 1 },
+                        staffId: { type: "integer", example: 1, readOnly: true },
                         branchId: { type: "integer", example: 1 },
                         customerId: { type: "integer", example: 1 },
                         totalAmount: {
                             type: "number",
                             format: "double",
-                            example: 50000
+                            example: 1999.98,
+                            readOnly: true
                         },
                         paymentMethod: { type: "string", example: "cash" },
-                        syncStatus: { type: "string", example: "pending" },
+                        syncStatus: { type: "string", example: "pending", readOnly: true },
                         items: {
                             type: "array",
                             items: { $ref: "#/components/schemas/OrderItem" }
@@ -122,13 +123,14 @@ const options = {
                     type: "object", 
                     properties: { 
                         id: { type: "integer", example: 1, readOnly: true }, 
-                        orderId: { type: "integer", example: 1 },
+                        orderId: { type: "integer", example: 1, readOnly: true },
                         productId: { type: "integer", example: 1 },
                         quantity: { type: "integer", example: 2 },
                         price: {
                             type: "number",
                             format: "double",
-                            example: 25000
+                            example: 999.99,
+                            readOnly: true
                         },
                         createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
                         updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
@@ -139,7 +141,7 @@ const options = {
                     required: ["username", "password"],
                     properties: {
                         username: { type: "string", example: "admin" },
-                        password: { type: "string", example: "123456" }
+                        password: { type: "string", example: "password123" }
                     }
                 },
                 SyncOrdersRequest: {
@@ -147,7 +149,26 @@ const options = {
                     properties: {
                         orders: {
                             type: "array",
-                            items: { $ref: "#/components/schemas/Order" }
+                            items: {
+                                type: "object",
+                                properties: {
+                                    localId: { type: "integer", example: 1 },
+                                    staffId: { type: "integer", example: 1 },
+                                    branchId: { type: "integer", example: 1 },
+                                    customerId: { type: "integer", example: 1 },
+                                    paymentMethod: { type: "string", example: "cash" },
+                                    items: {
+                                        type: "array",
+                                        items: {
+                                            type: "object",
+                                            properties: {
+                                                productId: { type: "integer", example: 1 },
+                                                quantity: { type: "integer", example: 2 }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 },

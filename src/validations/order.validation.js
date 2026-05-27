@@ -21,11 +21,7 @@ const orderValidation = {
             .withMessage("Item quantity is required")
             .isInt({ min: 1 })
             .withMessage("Item quantity must be a positive integer"),
-        body("items.*.unitPrice")
-            .notEmpty()
-            .withMessage("Item unitPrice is required")
-            .isFloat({ min: 0 })
-            .withMessage("Item unitPrice must be a positive number"),
+
         body("paymentMethod")
             .optional()
             .isIn(["cash", "card", "transfer"])
