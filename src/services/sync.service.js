@@ -23,6 +23,7 @@ const syncOrders = async (orders) => {
             }
         );
 
+        createdOrder.syncStatus = "synced";
         syncedOrders.push(createdOrder);
 
     }
