@@ -3,7 +3,7 @@ const { body } = require("express-validator");
 const orderValidation = {
     create: [
         body("customerId")
-            .optional()
+            .optional({ nullable: true })
             .isInt()
             .withMessage("CustomerId must be an integer"),
         body("items")
