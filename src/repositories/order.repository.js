@@ -29,6 +29,7 @@ const createOrderItem = async (
 const Branch = require("../models/branch.model");
 const User = require("../models/user.model");
 const Product = require("../models/product.model");
+const Customer = require("../models/customer.model");
 
 const getAllOrders = async () => {
     return await Order.findAll({
@@ -38,7 +39,8 @@ const getAllOrders = async () => {
                 include: [{ model: Product }]
             },
             { model: Branch },
-            { model: User, attributes: ['id', 'username'] }
+            { model: User, attributes: ['id', 'username'] },
+            { model: Customer, attributes: ['id', 'name', 'phone'] }
         ],
         order: [
             ["createdAt", "DESC"]
@@ -54,7 +56,8 @@ const getOrderById = async (id) => {
                 include: [{ model: Product }]
             },
             { model: Branch },
-            { model: User, attributes: ['id', 'username'] }
+            { model: User, attributes: ['id', 'username'] },
+            { model: Customer, attributes: ['id', 'name', 'phone'] }
         ]
     });
 };
@@ -81,7 +84,8 @@ const getOrdersByBranchId = async (branchId) => {
                 include: [{ model: Product }]
             },
             { model: Branch },
-            { model: User, attributes: ['id', 'username'] }
+            { model: User, attributes: ['id', 'username'] },
+            { model: Customer, attributes: ['id', 'name', 'phone'] }
         ],
         order: [
             ["createdAt", "DESC"]
