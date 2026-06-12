@@ -45,6 +45,10 @@ const options = {
                         username: { type: "string", example: "admin" },
                         role: { type: "string", example: "admin" },
                         branchId: { type: "integer", example: 1 },
+                        Branch: {
+                            $ref: "#/components/schemas/Branch",
+                            readOnly: true
+                        },
                         createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
                         updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
