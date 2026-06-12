@@ -115,6 +115,18 @@ const options = {
                             type: "array",
                             items: { $ref: "#/components/schemas/OrderItem" }
                         },
+                        Branch: {
+                            $ref: "#/components/schemas/Branch",
+                            readOnly: true
+                        },
+                        User: {
+                            $ref: "#/components/schemas/User",
+                            readOnly: true
+                        },
+                        Customer: {
+                            $ref: "#/components/schemas/Customer",
+                            readOnly: true
+                        },
                         createdAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true },
                         updatedAt: { type: "string", format: "date-time", example: "2023-01-01T00:00:00Z", readOnly: true }
                     }
