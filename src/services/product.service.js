@@ -10,9 +10,10 @@ const getProductById = async (id) => {
 };
 
 const createProduct = async (productData) => {
+    // 1. Gọi Repository để lưu sản phẩm
     const product = await productRepository.createProduct(productData);
     
-    // Initialize inventory for all branches
+    // 2. Logic nghiệp vụ: Khởi tạo tồn kho (Inventory) cho tất cả chi nhánh
     try {
         const branches = await Branch.findAll();
         const inventoryRecords = branches.map(branch => ({
@@ -23,8 +24,7 @@ const createProduct = async (productData) => {
         await Inventory.bulkCreate(inventoryRecords);
     } catch (error) {
         console.error("Error initializing inventory for new product:", error);
-        // We don't throw here to avoid failing product creation if inventory fails,
-        // though in a production app we'd probably use a transaction.
+        throw new Error("Failed to initialize inventory for product");
     }
     
     return product;

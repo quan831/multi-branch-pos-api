@@ -87,11 +87,11 @@ router.get(
  */
 router.post(
     "/",
-    verifyToken,
-    authorizeRoles("admin"),
-    productValidation.create,
-    validate,
-    productController.createProduct
+    verifyToken, // Xác thực JWT
+    authorizeRoles("admin"), // Phân quyền
+    productValidation.create, // Kiểm tra dữ liệu đầu vào (Validation)
+    validate, // Kiểm tra dữ liệu đầu vào (Validation)
+    productController.createProduct // Gọi controller
 );
 
 /**

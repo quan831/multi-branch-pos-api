@@ -35,8 +35,10 @@ const getProductById = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
+        // Chỉ nhận data từ req.body và đẩy xuống Service
         const product = await productService.createProduct(req.body);
 
+        // Trả kết quả về cho Client
         res.status(201).json(product);
     } catch (error) {
         res.status(400).json({
