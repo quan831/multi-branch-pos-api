@@ -157,7 +157,7 @@ const options = {
                     required: ["username", "password"],
                     properties: {
                         username: { type: "string", example: "admin" },
-                        password: { type: "string", example: "password123" }
+                        password: { type: "string", example: "your_password_here" }
                     }
                 },
                 SyncOrdersRequest: {

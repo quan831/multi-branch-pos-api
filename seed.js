@@ -13,7 +13,11 @@ async function seed() {
     const branch1 = await Branch.create({ name: "Hà Nội - Chi nhánh 1", address: "123 Cầu Giấy, Hà Nội" });
     const branch2 = await Branch.create({ name: "TP.HCM - Chi nhánh 2", address: "456 Quận 1, TP.HCM" });
     
-    const hashedPassword = await bcrypt.hash("password123", 10);
+    const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD;
+    if (!adminPassword) {
+        throw new Error("Missing DEFAULT_ADMIN_PASSWORD in environment variables");
+    }
+    const hashedPassword = await bcrypt.hash(adminPassword, 10);
     
     await User.create({
         username: "admin",

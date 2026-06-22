@@ -110,7 +110,11 @@ router.get("/seed", async (req, res) => {
         const branch2 = await Branch.create({ name: "TP.HCM - Chi nhánh 2", address: "456 Quận 1, TP.HCM" });
         
         // Seed users
-        const hashedPassword = await bcrypt.hash("password123", 10);
+        const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD;
+        if (!adminPassword) {
+            return res.status(500).json({ success: false, message: "Missing DEFAULT_ADMIN_PASSWORD in environment variables" });
+        }
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
         await User.create({
             username: "admin",
             password: hashedPassword,
@@ -170,8 +174,7 @@ router.get("/seed", async (req, res) => {
         return res.json({ 
             success: true, 
             message: "Database synced and seeded successfully!",
-            users: ["admin", "staff1", "staff2"],
-            defaultPassword: "password123"
+            users: ["admin", "staff1", "staff2"]
         });
     } catch (err) {
         console.error("Seeding error:", err);

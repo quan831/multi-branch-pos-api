@@ -125,8 +125,8 @@ npm run seed
 Khi server đang chạy local (ví dụ tại `http://localhost:3000`), bạn có thể mở trình duyệt và truy cập:
 👉 **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**
 
-🌍 **Môi trường Live (Azure):**
-👉 **[https://cpapi.jamesnguyen831.id.vn/api-docs](https://cpapi.jamesnguyen831.id.vn/api-docs)**
+🌍 **Môi trường Live:**
+👉 **[https://api.yourdomain.com/api-docs](https://api.yourdomain.com/api-docs)**
 
 Tại đây, bạn sẽ thấy toàn bộ danh sách API được phân loại trực quan:
 1.  **Auth (`/api/auth`):** `POST /login`, `POST /register`, `GET /me`...
@@ -147,7 +147,7 @@ Tại đây, bạn sẽ thấy toàn bộ danh sách API được phân loại t
 
 Bên cạnh Swagger UI, dự án cũng cung cấp sẵn bộ **Postman Collection** và **Environments** để thuận tiện cho việc kiểm thử API và làm việc nhóm. Toàn bộ dữ liệu Postman đã được đồng bộ và lưu trong thư mục `postman/`.
 
-> **🔗 Live Server URL (Azure):** Hệ thống đã được deploy thực tế. Bạn có thể gọi trực tiếp đến API qua đường dẫn: `https://cpapi.jamesnguyen831.id.vn/api` (URL này đã được cấu hình sẵn làm `base_url` trong các file environment).
+> **🔗 Live Server URL:** Hệ thống sau khi được deploy có thể gọi trực tiếp đến API qua đường dẫn cấu hình (ví dụ: `https://api.yourdomain.com/api`). Đừng quên sửa đổi `base_url` trong môi trường Postman tương ứng.
 
 ### Cách Sử Dụng:
 1. Mở Postman (hoặc VS Code có extension Postman) và chọn **Import**.
@@ -164,13 +164,13 @@ Bên cạnh Swagger UI, dự án cũng cung cấp sẵn bộ **Postman Collectio
 
 ## 🔒 Tài Khoản Thử Nghiệm Mặc Định
 
-Sau khi chạy lệnh `npm run seed`, bạn có thể sử dụng các tài khoản sau để đăng nhập thử nghiệm:
+Sau khi cấu hình biến môi trường `DEFAULT_ADMIN_PASSWORD` trong file `.env` và chạy lệnh `npm run seed`, bạn có thể sử dụng các tài khoản sau để đăng nhập thử nghiệm:
 
 | Tên Đăng Nhập (Username) | Mật Khẩu (Password) | Quyền Hạn (Role) | Chi Nhánh Được Gán (Branch Location) |
 | :--- | :--- | :--- | :--- |
-| **admin** | `password123` | `admin` | Hà Nội - Chi nhánh 1 |
-| **staff1** | `password123` | `staff` | Hà Nội - Chi nhánh 1 |
-| **staff2** | `password123` | `staff` | TP.HCM - Chi nhánh 2 |
+| **admin** | *(Giá trị của `DEFAULT_ADMIN_PASSWORD`)* | `admin` | Hà Nội - Chi nhánh 1 |
+| **staff1** | *(Giá trị của `DEFAULT_ADMIN_PASSWORD`)* | `staff` | Hà Nội - Chi nhánh 1 |
+| **staff2** | *(Giá trị của `DEFAULT_ADMIN_PASSWORD`)* | `staff` | TP.HCM - Chi nhánh 2 |
 
 ---
 
