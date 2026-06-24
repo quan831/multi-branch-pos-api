@@ -1,7 +1,7 @@
 {
   "name": "multi-branch-pos-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API for Desktop Multi Branch POS",
   "main": "server.js",
   "scripts": {
     "test": "echo \"No tests defined yet\"",
@@ -10,8 +10,12 @@
     "seed": "node seed.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "quan831",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quan831/multi-branch-pos-api.git"
+  },
   "engines": {
     "node": ">=22.0.0"
   },
