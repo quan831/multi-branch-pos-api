@@ -16,6 +16,10 @@ const customerValidation = {
             .optional()
             .isEmail()
             .withMessage("Invalid email"),
+        body("address")
+            .optional()
+            .isString()
+            .withMessage("Address must be a string"),
     ],
     update: [
         body("name")
@@ -32,6 +36,10 @@ const customerValidation = {
             .optional()
             .isEmail()
             .withMessage("Invalid email"),
+        body("address")
+            .optional()
+            .isString()
+            .withMessage("Address must be a string"),
     ]
 };
 

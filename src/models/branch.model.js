@@ -16,6 +16,11 @@ const Branch = sequelize.define("Branch", {
     address: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+
+    phone: {
+        type: DataTypes.TEXT,
+        allowNull: true
     }
 });
 

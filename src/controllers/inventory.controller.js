@@ -5,7 +5,7 @@ const inventoryService = require(
 const getAllInventories = async (req, res) => {
     try {
         const inventories =
-            await inventoryService.getAllInventories();
+            await inventoryService.getAllInventories(req.user);
 
         res.status(200).json(inventories);
 
@@ -20,7 +20,8 @@ const getInventoryById = async (req, res) => {
     try {
         const inventory =
             await inventoryService.getInventoryById(
-                req.params.id
+                req.params.id,
+                req.user
             );
 
         if (!inventory) {

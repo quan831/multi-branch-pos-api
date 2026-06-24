@@ -179,7 +179,6 @@ Sau khi cấu hình biến môi trường `DEFAULT_ADMIN_PASSWORD` trong file `.
 Mặc dù hệ thống đã xây dựng cấu trúc cơ sở dữ liệu cơ bản cho mô hình đa chi nhánh, nhưng bài toán "đa chi nhánh" thực tế vẫn chưa được giải quyết triệt để:
 *   **Thiếu tính năng điều chuyển kho (Stock Transfer):** Chưa hỗ trợ quy trình xuất/nhập và luân chuyển hàng hóa an toàn giữa các chi nhánh.
 *   **Thiếu chính sách giá linh hoạt:** Các sản phẩm hiện tại đang áp dụng chung một mức giá trên toàn hệ thống thay vì có chính sách giá riêng biệt cho từng chi nhánh hoặc khu vực.
-*   **Cô lập dữ liệu (Data Isolation) chưa chặt chẽ:** Một số API backend chưa thực hiện kiểm tra và giới hạn quyền truy xuất dữ liệu nghiêm ngặt theo `branchId` của Staff ở cấp độ Server, phần lớn mới chỉ lọc ở phía Client.
 
 ---
 

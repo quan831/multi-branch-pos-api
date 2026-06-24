@@ -35,7 +35,8 @@ const getOrderById = async (req, res) => {
 
         const order =
             await orderService.getOrderById(
-                req.params.id
+                req.params.id,
+                req.user
             );
 
         if (!order) {

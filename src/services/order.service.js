@@ -173,7 +173,7 @@ const getOrderHistory = async (user, branchId) => {
     }
 };
 
-const getOrderById = async (id) => {
+const getOrderById = async (id, user) => {
 
     const order =
         await orderRepository.getOrderById(id);
@@ -182,6 +182,10 @@ const getOrderById = async (id) => {
         throw new Error(
             "Order not found"
         );
+    }
+    
+    if (user && user.role === "staff" && order.branchId !== user.branchId) {
+        throw new Error("Access denied: You do not have permission to view this order.");
     }
 
     return order;

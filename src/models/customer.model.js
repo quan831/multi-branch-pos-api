@@ -23,6 +23,11 @@ const Customer = sequelize.define("Customer", {
         type: DataTypes.TEXT,
         unique: true,
         allowNull: true
+    },
+
+    address: {
+        type: DataTypes.TEXT,
+        allowNull: true
     }
 });
 

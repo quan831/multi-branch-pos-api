@@ -11,6 +11,16 @@ const getAllInventories = async () => {
     });
 };
 
+const getInventoriesByBranchId = async (branchId) => {
+    return await Inventory.findAll({
+        where: { branchId },
+        include: [
+            { model: Product },
+            { model: Branch }
+        ]
+    });
+};
+
 const getInventoryById = async (id) => {
     return await Inventory.findByPk(id);
 };
@@ -45,6 +55,7 @@ const deleteInventory = async (id) => {
 
 module.exports = {
     getAllInventories,
+    getInventoriesByBranchId,
     getInventoryById,
     createInventory,
     updateInventory,

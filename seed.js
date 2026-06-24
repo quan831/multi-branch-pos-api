@@ -10,8 +10,8 @@ async function seed() {
     console.log("Starting seed...");
     await sequelize.sync({ force: true });
     
-    const branch1 = await Branch.create({ name: "Hà Nội - Chi nhánh 1", address: "123 Cầu Giấy, Hà Nội" });
-    const branch2 = await Branch.create({ name: "TP.HCM - Chi nhánh 2", address: "456 Quận 1, TP.HCM" });
+    const branch1 = await Branch.create({ name: "Hà Nội - Chi nhánh 1", address: "123 Cầu Giấy, Hà Nội", phone: "0243123456" });
+    const branch2 = await Branch.create({ name: "TP.HCM - Chi nhánh 2", address: "456 Quận 1, TP.HCM", phone: "0283123456" });
     
     const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD;
     if (!adminPassword) {
