@@ -24,8 +24,7 @@ const options = {
 
         servers: [
             {
-                url:
-                    `${process.env.APP_URL || "http://localhost:3000"}/api`
+                url: process.env.API_URL || `${process.env.APP_URL || "http://localhost:3000"}/api`
             }
         ],
 
